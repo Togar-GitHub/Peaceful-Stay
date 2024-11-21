@@ -1,0 +1,9 @@
+.profile-dropdown {
+  position: absolute;
+  background-color: white;
+  margin: 20px;
+}
+
+.hidden {
+  display: none;
+}
