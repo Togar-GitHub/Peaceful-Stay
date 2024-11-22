@@ -1,0 +1,32 @@
+#nav-bar {
+  margin-top: 5px;
+  height: 100px;
+  background-color: aqua;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+}
+
+#nav-bar li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  list-style: none;
+}
+
+#logo {
+  margin: 10px 10px 10px 10px;
+  width: 40px;
+  height: auto;
+}
+
+h1 {
+  margin: 15px 10px 10px 10px;
+  font-size: 36px;
+}
+
+.profile-button-container {
+  margin-right: 40px;
+}

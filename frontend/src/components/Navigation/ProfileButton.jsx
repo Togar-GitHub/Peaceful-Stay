@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { FaUserCircle } from 'react-icons/fa';
+// import { FaUserCircle } from 'react-icons/fa';
+import { PiUserListBold } from "react-icons/pi";
 import * as sessionActions from '../../store/session';
 // import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import OpenModalMenuItem from './OpenModalMenuItem';
@@ -45,21 +46,24 @@ function ProfileButton({ user }) {
   return (
     <>
       <button onClick={toggleMenu}>
-        <FaUserCircle />
+        <PiUserListBold size='60px' />
       </button>
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
+          <div id='user-details'>
+            <li>username: {user.username}</li>
+            <li>full name: {user.firstName} {user.lastName}</li>
+            <li>email: {user.email}</li>
             <li>
-              <button onClick={logout}>Log Out</button>
+              <button id='logout-button' onClick={logout}>Log Out</button>
             </li>
+          </div>
           </>
         ) : (
           <>
-            <li>                    {/*//! using the OpenModalMenuItem */}
+          <div id='drop-login-signup' >
+            <li>
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
@@ -73,18 +77,7 @@ function ProfileButton({ user }) {
                 modalComponent={<SignupFormModal />}
               />
             </li>
-            {/* <li>                  //! using the OpenModal Button
-              <OpenModalButton
-                buttonText="Log In"
-                modalComponent={<LoginFormModal />}
-              />
-            </li>
-            <li>
-              <OpenModalButton
-                buttonText="Sign Up"
-                modalComponent={<SignupFormModal />}
-              />
-            </li> */}
+          </div>
           </>
         )}
       </ul>

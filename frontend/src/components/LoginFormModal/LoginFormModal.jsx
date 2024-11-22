@@ -33,6 +33,7 @@ function LoginFormModal() {
 
   return (
     <>
+    <div id='login-modal'>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -53,9 +54,10 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && <p>{errors.credential}</p>}
+        {errors.credential && <p className='error'>{errors.credential}</p>}
         <button type='submit'>Log In</button>
       </form>
+    </div>
     </>
   );
 }
