@@ -46,9 +46,9 @@ function SpotDetailById() {
   return (
     <>
       <div className='main-container' style={{ marginTop: "100px" }}>
+      <h3>{spotDetail.name}</h3>
+      <h4>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h4>
         <div className='top-container'>
-          <h3>{spotDetail.name}</h3>
-          <h4>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h4>
           <div className='top-left-side'>
             <div>
               <img className='main-image' src={spotDetail.previewImage} />
@@ -68,12 +68,14 @@ function SpotDetailById() {
             <p>{spotDetail.description}</p>
           </div>
           <div className='mid-right-side'>
-            <h2>${spotDetail.price} night</h2>
-            <h3>
-              <IoIosStar />
-              {spotDetail.avgRating ? spotDetail.avgRating : 'New'}
-              {` - `}{reviewLists.Reviews.length} reviews
-            </h3>
+            <div className='price-rating-container'>
+              <h2 className='price'>${spotDetail.price} night</h2>
+              <h3 className='rating'>
+                <IoIosStar />
+                {spotDetail.avgRating ? spotDetail.avgRating : 'New'}
+                {` - `}{reviewLists.Reviews.length} reviews
+              </h3>
+            </div>
             <button>Reserve</button>
           </div>
         </div>  

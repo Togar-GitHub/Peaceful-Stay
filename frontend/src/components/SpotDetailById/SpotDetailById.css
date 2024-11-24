@@ -5,29 +5,29 @@
   margin: 20px;
 }
 
+.main-container h3, h4 {
+  display: block;
+  width: 100%;
+}
+
+.main-container h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.main-container h4 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
 /* Top container (name, location, and images) */
 .top-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
   margin-bottom: 20px;
-}
-
-.top-container h3, h4 {
-  display: block;
-  width: 100%;
-}
-
-.top-container h3 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.top-container h4 {
-  font-size: 1.2rem;
-  color: #555;
-  margin-top: 0;
-  margin-bottom: 5px;
 }
 
 /* Left side in the top container (name, city, main image) */
@@ -94,16 +94,32 @@
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
-.mid-right-side h2 {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.mid-right-side h3 {
-  font-size: 1.2rem;
+.price-rating-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.price {
+  font-size: 1.5rem;
+  white-space: nowrap;
+}
+
+.rating {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: flex-end; /* Align the rating content to the right */
+  align-items: center;
+}
+
+.rating svg {
+  margin-right: 5px; /* Add some space between the star icon and rating */
 }
 
 .mid-right-side button {
