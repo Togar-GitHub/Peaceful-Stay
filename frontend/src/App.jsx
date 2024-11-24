@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-// import LoginFormPage from './components/LoginFormPage/LoginFormPage'; //! using Modal for Login - phase4 start line 558
-// import SignupFormPage from './components/SignupFormPage/SignupFormPage'; //! using Modal for Login - phase4 line 754
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
 import AllSpots from './components/AllSpots/AllSpots';
@@ -37,15 +35,7 @@ const router = createBrowserRouter([
       {
         path: '/api/spots/:spotId',
         element: <SpotDetailById />
-      },
-      // {                                  //!using Modal for Login - phase4 start line 558
-      //   path: '/login',
-      //   element: <LoginFormPage />
-      // },
-      // {                                  //!using Modal for signup - phase4 start line 754
-      //   path: '/signup',
-      //   element: <SignupFormPage />
-      // }
+      }
     ]
   }
 ]);

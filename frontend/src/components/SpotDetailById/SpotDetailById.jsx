@@ -45,10 +45,10 @@ function SpotDetailById() {
 
   return (
     <>
-      <div className='main-container'>
+      <div className='main-container' style={{ marginTop: "100px" }}>
         <div className='top-container'>
-          <h2>{spotDetail.name}</h2>
-          <h3>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h3>
+          <h3>{spotDetail.name}</h3>
+          <h4>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h4>
           <div className='top-left-side'>
             <div>
               <img className='main-image' src={spotDetail.previewImage} />
