@@ -12,17 +12,17 @@ const reviewImageSeeds = [
   {
     // id: 1,
     reviewId: 1,
-    url: 'https://example.com/review-image1.jpg'
+    url: 'https://a0.muscache.com/im/pictures/hosting/Hosting-578116818093592631/original/59d35074-36e2-4f1d-9512-94878aa8420d.jpeg?im_w=720&im_format=avif'
   },
   {
     // id: 2,
     reviewId: 1,
-    url: 'https://example.com/review-image2.jpg'
+    url: 'https://a0.muscache.com/im/pictures/hosting/Hosting-578116818093592631/original/4d1e9f7d-25a9-466e-bcf5-0753941a272d.jpeg?im_w=720&im_format=avif'
   },
   {
     // id: 3,
     reviewId: 2,
-    url: 'https://example.com/review-image3.jpg'
+    url: 'https://a0.muscache.com/im/pictures/d36ca33f-7e1d-410e-9954-6394c74d5580.jpg?im_w=720&im_format=avif'
   },
 ];
 

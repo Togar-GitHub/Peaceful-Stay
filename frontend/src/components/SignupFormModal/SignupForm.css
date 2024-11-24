@@ -29,6 +29,7 @@ form {
 form label {
   margin-bottom: 10px;
   font-size: 18px;
+  font-weight: bold;
 }
 
 form input {
@@ -41,10 +42,15 @@ form input {
   box-sizing: border-box; /* Ensures padding is included in width */
 }
 
+.signup-notes {
+  font-style: italic;
+  margin-top: 0;
+}
+
 /* Error message styling */
 .error {
   color: red;
-  font-size: 24px;
+  font-size: 16px;
   margin-top: 5px;
 }
 
@@ -62,4 +68,9 @@ form button {
 
 form button:hover {
   background-color: #3d4dd6;
+}
+
+.disabled-message {
+  font-size: 16px;
+  font-weight: bold;
 }

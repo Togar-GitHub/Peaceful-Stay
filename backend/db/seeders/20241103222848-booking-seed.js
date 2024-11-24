@@ -12,7 +12,7 @@ const bookingSeeds = [
   {
     // id: 1,
     spotId: 1,
-    userId: 1,
+    userId: 3,
     startDate: '2024-11-05',
     endDate: '2024-11-10'
   },
@@ -26,7 +26,7 @@ const bookingSeeds = [
   {
     // id: 3,
     spotId: 3,
-    userId: 2,
+    userId: 3,
     startDate: '2024-11-20',
     endDate: '2024-11-25'
   },

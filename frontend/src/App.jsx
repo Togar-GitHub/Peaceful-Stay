@@ -5,6 +5,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 // import SignupFormPage from './components/SignupFormPage/SignupFormPage'; //! using Modal for Login - phase4 line 754
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
+import AllSpots from './components/AllSpots/AllSpots';
+import SpotDetailById from './components/SpotDetailById/SpotDetailById';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -30,7 +32,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1>Welcome!</h1>
+        element: <AllSpots />
+      },
+      {
+        path: '/api/spots/:spotId',
+        element: <SpotDetailById />
       },
       // {                                  //!using Modal for Login - phase4 start line 558
       //   path: '/login',

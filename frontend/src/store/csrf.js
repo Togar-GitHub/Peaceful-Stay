@@ -11,8 +11,6 @@ export async function csrfFetch(url, options = {}) {
     }
 
     const res = await window.fetch(url, options);
-    console.log('URL > ', url);
-    console.log('OPTIONS > ', options);
 
     if (res.status >= 400) throw res;
 

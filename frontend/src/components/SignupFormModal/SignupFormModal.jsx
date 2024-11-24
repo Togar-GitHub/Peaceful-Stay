@@ -1,18 +1,11 @@
-//! change the folder and file name from SignupFormPage into SignupFormModal
-//! based on frontend authenticate starting line 805
-//! any comments are from these changes
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-// import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
-// import { Navigate } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
 import './SignupForm.css';
 
 function SignupFormModal() {
   const dispatch = useDispatch();
-  // const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -20,9 +13,23 @@ function SignupFormModal() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const { closeModal } = useModal();
 
-  // if (sessionUser) return <Navigate to='/' replace={true} />;
+  useEffect(() => {
+    const isValidForm = 
+      email &&
+      email.includes('@') &&
+      username.length >= 4 &&
+      firstName &&
+      lastName &&
+      password.length >= 6 &&
+      confirmPassword &&
+      password === confirmPassword &&
+      Object.keys(errors).length === 0;
+
+    setIsSubmitDisabled(!isValidForm);
+  }, [email, username, firstName, lastName, password, confirmPassword, errors]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -64,6 +71,7 @@ function SignupFormModal() {
             required
           />
         </label>
+        <p className='signup-notes'>Please enter email with '@' in it</p>
         {errors.email && <p className='error'>{errors.email}</p>}
         <label>
           Username 
@@ -74,6 +82,7 @@ function SignupFormModal() {
             required
           />
         </label>
+        <p className='signup-notes'>Please enter at least 4 characters for username</p>
         {errors.username && <p className='error'>{errors.username}</p>}
         <label>
           First Name
@@ -104,6 +113,7 @@ function SignupFormModal() {
             required
           />
         </label>
+        <p className='signup-notes'>Please have at least 6 characters for Password</p>
         {errors.password && <p className='error'>{errors.password}</p>}
         <label>
           Confirm Password
@@ -114,8 +124,18 @@ function SignupFormModal() {
             required
           />
         </label>
+        <p className='signup-notes'>Please ensure the Confirm Password is the same with Password</p>
         {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
-        <button type='submit'>Sign Up</button>
+        
+        {isSubmitDisabled && (
+          <p className='disabled-message'>Please check your input before submitting</p>
+        )}
+
+        <button 
+          type='submit'
+          disabled={isSubmitDisabled}>
+          Sign Up
+        </button>
       </form>
     </div>
     </>

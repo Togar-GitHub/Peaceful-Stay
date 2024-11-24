@@ -31,6 +31,10 @@ function LoginFormModal() {
     );
   };
 
+  const hasError = errors.credential || errors.password;
+  const isFormNotValid = credential === '' || password === '';
+  const isSubmitDisabled = isFormNotValid || hasError;
+
   return (
     <>
     <div id='login-modal'>
@@ -55,7 +59,11 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && <p className='error'>{errors.credential}</p>}
-        <button type='submit'>Log In</button>
+        <button 
+          type='submit'
+          disabled={isSubmitDisabled}>
+          Log In
+        </button>
       </form>
     </div>
     </>
