@@ -77,6 +77,7 @@ function SpotDetailById() {
             <button>Reserve</button>
           </div>
         </div>  
+        <hr />
         <div className='bottom-container'>
           <h2>
             <IoIosStar />
@@ -86,7 +87,7 @@ function SpotDetailById() {
           {reviewLists.Reviews.map((review) => (
             <div key={reviewLists.id} className='review-list-details'>
               <h3>{review.User.firstName}</h3>
-              <p4>{DisplayedDate({ updatedAt: review.updatedAt })}</p4>
+              <h4>{DisplayedDate({ updatedAt: review.updatedAt })}</h4>
               <p>{review.review}</p>
             </div>
           ))}
