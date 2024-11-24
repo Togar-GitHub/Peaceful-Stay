@@ -71,7 +71,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        <p className='signup-notes'>Please enter email with '@' in it</p>
+        <p className='signup-notes'>Please enter email with @ in it</p>
         {errors.email && <p className='error'>{errors.email}</p>}
         <label>
           Username 
