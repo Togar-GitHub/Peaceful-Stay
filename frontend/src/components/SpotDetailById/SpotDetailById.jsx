@@ -47,9 +47,9 @@ function SpotDetailById() {
     <>
       <div className='main-container'>
         <div className='top-container'>
+          <h2>{spotDetail.name}</h2>
+          <h3>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h3>
           <div className='top-left-side'>
-            <h2>{spotDetail.name}</h2>
-            <h3>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h3>
             <div>
               <img className='main-image' src={spotDetail.previewImage} />
           </div>  
@@ -72,7 +72,7 @@ function SpotDetailById() {
             <h3>
               <IoIosStar />
               {spotDetail.avgRating ? spotDetail.avgRating : 'New'}
-              - {reviewLists.length} reviews
+              {` - `}{reviewLists.Reviews.length} reviews
             </h3>
             <button>Reserve</button>
           </div>
@@ -81,7 +81,7 @@ function SpotDetailById() {
           <h2>
             <IoIosStar />
             {spotDetail.avgRating ? spotDetail.avgRating : 'New'}
-            - {reviewLists.length} reviews
+            {` - `}{reviewLists.Reviews.length} reviews
           </h2>
           {reviewLists.Reviews.map((review) => (
             <div key={reviewLists.id} className='review-list-details'>
