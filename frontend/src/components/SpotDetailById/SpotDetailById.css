@@ -1,0 +1,153 @@
+/* Main container */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+/* Top container (name, location, and images) */
+.top-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* Left side in the top container (name, city, main image) */
+.top-left-side {
+  flex: 1;
+  padding-right: 20px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* Main image styling */
+.main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+/* Right side in the top container (other images) */
+.top-right-side {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  flex: 1;
+}
+
+.other-images {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.other-images img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Mid container (hosted by, description, price, reviews, and reserve) */
+.mid-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+/* Left side in the mid container (hosted by and description) */
+.mid-left-side {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.mid-left-side h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.mid-left-side p {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Right side in the mid container (price, review count, reserve) */
+.mid-right-side {
+  flex: 0.4;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.mid-right-side h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.mid-right-side h3 {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.mid-right-side button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
+
+.mid-right-side button:hover {
+  background-color: #45a049;
+}
+
+/* Horizontal line */
+hr {
+  width: 100%;
+  border: 1px solid #ddd;
+  margin: 30px 0;
+}
+
+/* Bottom container (reviews) */
+.bottom-container {
+  margin-top: 30px;
+}
+
+.bottom-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.review-list-details {
+  padding: 15px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.review-list-details h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.review-list-details p4 {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.review-list-details p {
+  font-size: 1rem;
+  color: #333;
+}

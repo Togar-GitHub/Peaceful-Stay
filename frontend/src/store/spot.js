@@ -3,6 +3,7 @@
 // ACTION TYPES
 const GET_ALL_SPOTS = 'spot/GET_ALL_SPOTS';
 const GET_SPOT_DETAIL = 'spot/GET_SPOT_DETAIL';
+const GET_REVIEWS_BY_SPOT = 'spot/GET_REVIEWS_BY_SPOT';
 
 // ACTION CREATORS
 const getAllSpots = (spots) => {
@@ -12,10 +13,17 @@ const getAllSpots = (spots) => {
   }
 }
 
-const getSpotDetail = (spotId) => {
+const getSpotDetail = (spotDetail) => {
   return {
     type: GET_SPOT_DETAIL,
-    spotId
+    spotDetail
+  }
+}
+
+const getReviewsBySpot = (reviewLists) => {
+  return {
+    type: GET_REVIEWS_BY_SPOT,
+    reviewLists
   }
 }
 
@@ -29,12 +37,21 @@ export const getAllSpotsThunk = () => async (dispatch) => {
   }
 }
 
-export const getSpotDetailThunk = () => async (dispatch) => {
-  const res = await fetch('/api/spots/spotId');
+export const getSpotDetailThunk = (spotId) => async (dispatch) => {
+  const res = await fetch(`/api/spots/${spotId}`);
 
   if (res.ok) {
     const spotDetail = await res.json();
     dispatch(getSpotDetail(spotDetail))
+  }
+}
+
+export const getReviewsBySpotThunk = (spotId) => async (dispatch) => {
+  const res = await fetch(`/api/spots/${spotId}/reviews`);
+
+  if (res.ok) {
+    const reviewsBySpot = await res.json();
+    dispatch(getReviewsBySpot(reviewsBySpot))
   }
 }
 
@@ -49,6 +66,9 @@ const spotReducer = (state = initialState, action) => {
 
     case GET_SPOT_DETAIL:
       return { ...state, spotDetail: action.spotDetail }
+
+    case GET_REVIEWS_BY_SPOT:
+      return { ...state, reviewLists: action.reviewLists }
 
     default:
       return state;
