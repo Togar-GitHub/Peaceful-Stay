@@ -1,4 +1,4 @@
-import { csrfFetch } from "./csrf";
+// import { csrfFetch } from "./csrf";
 
 // ACTION TYPES
 const GET_ALL_SPOTS = 'spot/GET_ALL_SPOTS';
@@ -29,7 +29,7 @@ export const getAllSpotsThunk = () => async (dispatch) => {
   }
 }
 
-export const getSpotDetailThunk = (spotId) => async (dispatch) => {
+export const getSpotDetailThunk = () => async (dispatch) => {
   const res = await fetch('/api/spots/spotId');
 
   if (res.ok) {
