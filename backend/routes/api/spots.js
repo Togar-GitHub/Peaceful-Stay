@@ -121,7 +121,8 @@ router.get('/:spotId/reviews',
                     { model: ReviewImage,
                         attributes: ['id', 'url']
                     }
-                ]
+                ],
+                order: [['updatedAt', 'DESC']]
             });
 
             if (reviewBySpotId.length > 0) {

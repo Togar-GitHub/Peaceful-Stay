@@ -5,6 +5,7 @@ import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
 import AllSpots from './components/AllSpots/AllSpots';
 import SpotDetailById from './components/SpotDetailById/SpotDetailById';
+import BookingsBySpot from './components/BookingsBySpot/BookingsBySpot';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: '/api/spots/:spotId',
         element: <SpotDetailById />
+      },
+      {
+        path: '/reservation',
+        element: <BookingsBySpot />
       }
     ]
   }

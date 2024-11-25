@@ -77,3 +77,18 @@ form button:disabled {
   font-size: 16px;
   font-weight: bold;
 }
+
+.demo-user-container {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.demo-user {
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.demo-user:hover {
+  cursor: pointer;
+}

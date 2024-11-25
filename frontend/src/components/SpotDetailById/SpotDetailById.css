@@ -107,26 +107,54 @@
 }
 
 .price-rating-container {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
-  margin-bottom: 20px;
+  column-gap: 10px;
+  margin-bottom: 5px;
 }
 
 .price {
   font-size: 1.5rem;
   white-space: nowrap;
+  color: #333;
 }
 
-.rating {
-  font-size: 1.2rem;
+.mid-rating-container {
   display: flex;
-  justify-content: flex-end; /* Align the rating content to the right */
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mid-rating-container svg {
+  margin-right: 5px; /* Add some space between the star icon and rating */
+  font-size: 30px;
+  margin-top: -5px;
+}
+
+.mid-rating {
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  color: #333;
+}
+
+.mid-reviews-container {
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 
-.rating svg {
-  margin-right: 5px; /* Add some space between the star icon and rating */
+.mid-reviews {
+  font-size: 1.4rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.mid-reviews-container svg {
+  margin-right: 5px;
+  font-size: 20px;
 }
 
 .mid-right-side button {
@@ -153,11 +181,42 @@ hr {
 /* Bottom container (reviews) */
 .bottom-container {
   margin-top: 2px;
+  color: #333;
 }
 
-.bottom-container h2 {
+.bottom-rating-reviews {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bottom-rating {
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  margin-top: -2px;
+}
+
+.bottom-rating svg {
+  margin-top: -5px;
+}
+
+.bottom-reviews-container {
+  display: flex;
+  align-items: center;
+}
+
+.bottom-reviews {
   font-size: 1.5rem;
-  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
+}
+
+.bottom-reviews-container svg {
+  margin-left: 5px;
+  margin-top: 0px;
+  font-size: 18px
 }
 
 .review-list-details {

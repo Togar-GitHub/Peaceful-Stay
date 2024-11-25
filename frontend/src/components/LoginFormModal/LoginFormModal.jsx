@@ -12,6 +12,18 @@ function LoginFormModal() {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const { closeModal } = useModal();
 
+  const demoUser = (e) => {
+    e.preventDefault();
+    setErrors({});
+    return dispatch(sessionActions.login({ credential: 'johndoe', password: 'password1' }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data?.errors) setErrors(data.errors);
+      }
+    );
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -89,6 +101,11 @@ function LoginFormModal() {
           disabled={isSubmitDisabled}>
           Log In
         </button>
+
+        <div className='demo-user-container'>
+          <span className='demo-user' onClick={demoUser}>Demo User</span>
+        </div>
+
       </form>
     </div>
     </>
