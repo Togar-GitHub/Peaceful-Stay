@@ -52,14 +52,14 @@ function SpotDetailById() {
           <div className='top-left-side'>
             <div>
               <img className='main-image' src={spotDetail.previewImage} />
-          </div>  
+            </div>
+          </div>
           <div className='top-right-side'>
             {spotDetail.SpotImages.map((image) => (
               <div key={spotDetail.SpotImages.id} className='other-images'>
                 <img src={image.url} />
               </div>
             ))}
-            </div>
           </div>
         </div>
         <div className='mid-container'> 

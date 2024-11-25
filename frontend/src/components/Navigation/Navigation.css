@@ -11,27 +11,74 @@
   left: 0;
   width: 100%;
   z-index: 1000;
+  padding: 0 20px;
 }
 
-#nav-bar li {
+.nav-bar-left {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  list-style: none;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
 }
 
 #logo {
-  margin: 10px 10px 10px 10px;
-  width: 40px;
+  width: 80px;
   height: auto;
 }
 
+#logo:hover {
+  cursor: pointer;
+}
+
+.h1-container {
+  display: flex;
+  align-items: center;
+}
+
 h1 {
-  margin: 15px 10px 10px 10px;
+  margin: 0;
   font-size: 36px;
+  text-decoration: none;
+}
+
+.h1-name {
+  text-decoration: none;
+}
+
+.h1-name:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.nav-bar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.create-spot {
+  margin-right: 20px;
+}
+
+.create-spot-link {
+  font-size: 24px;
+  text-decoration: none;
 }
 
 .profile-button-container {
   margin-right: 40px;
+}
+
+.create-spot {
+  font-size: 18px;
+}
+
+.create-spot-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }

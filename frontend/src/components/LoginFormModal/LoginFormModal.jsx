@@ -1,23 +1,16 @@
-//! initially this file named LoginFormPage, change to LoginFormModal - following phase4 starts line 616
-//! the changes on the file name and on the folder name
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { Navigate } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import './LoginForm.css';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
-  // const sessionUser = useSelector((state) => state.session.user);
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState({});
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const { closeModal } = useModal();
-
-  // if (sessionUser) return <Navigate to='/' replace={true} />
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,14 +19,40 @@ function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        if (data && data.errors) setErrors(data.errors);
+        if (data?.errors) setErrors(data.errors);
       }
     );
   };
 
-  const hasError = errors.credential || errors.password;
-  const isFormNotValid = credential === '' || password === '';
-  const isSubmitDisabled = isFormNotValid || hasError;
+  const handleCredentialChange = (e) => {
+    const value = e.target.value;
+    setCredential(value);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      delete newErrors.credential;
+      return newErrors;
+    });
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      delete newErrors.password;
+      delete newErrors.credential;
+      return newErrors;
+    });
+  };
+
+  useEffect(() => {
+    const isValidForm = 
+    credential.length >= 4 &&
+    password.length >= 6 &&
+    Object.keys(errors).length === 0;
+    
+    setIsSubmitDisabled(!isValidForm);
+  }, [credential, password, errors]);
 
   return (
     <>
@@ -45,20 +64,26 @@ function LoginFormModal() {
           <input
             type='text'
             value={credential}
-            onChange={(e) => setCredential(e.target.value)}
+            onChange={handleCredentialChange}
             required
           />
         </label>
+        <p className='login-notes'>Please enter your username or email at least 4 characters</p>
         <label>
           Password 
           <input
-            type="password"
+            type='password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             required
           />
         </label>
+        <p className='login-notes'>Please enter your password at least 6 characters</p>
         {errors.credential && <p className='error'>{errors.credential}</p>}
+
+        {isSubmitDisabled && (
+          <p className='disabled-message'>Please check your input before submitting</p>
+        )}
         <button 
           type='submit'
           disabled={isSubmitDisabled}>

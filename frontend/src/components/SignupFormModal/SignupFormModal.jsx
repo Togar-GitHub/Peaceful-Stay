@@ -16,21 +16,6 @@ function SignupFormModal() {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const { closeModal } = useModal();
 
-  useEffect(() => {
-    const isValidForm = 
-      email &&
-      email.includes('@') &&
-      username.length >= 4 &&
-      firstName &&
-      lastName &&
-      password.length >= 6 &&
-      confirmPassword &&
-      password === confirmPassword &&
-      Object.keys(errors).length === 0;
-
-    setIsSubmitDisabled(!isValidForm);
-  }, [email, username, firstName, lastName, password, confirmPassword, errors]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
@@ -57,6 +42,60 @@ function SignupFormModal() {
     });
   };
 
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      delete newErrors.email;
+      return newErrors;
+    });
+  };
+  
+  const handleUsernameChange = (e) => {
+    const value = e.target.value;
+    setUsername(value);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      delete newErrors.username;
+      return newErrors;
+    });
+  };
+    
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      delete newErrors.password;
+      return newErrors;
+    });
+  };
+      
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      delete newErrors.confirmPassword;
+      return newErrors;
+    });
+  };
+
+  useEffect(() => {
+    const isValidForm = 
+      email &&
+      email.includes('@') &&
+      username.length >= 4 &&
+      firstName &&
+      lastName &&
+      password.length >= 6 &&
+      confirmPassword &&
+      Object.keys(errors).length === 0;
+
+    setIsSubmitDisabled(!isValidForm);
+  }, [email, username, firstName, lastName, password, confirmPassword, errors]);
+
   return (
     <>
     <div id='signup-modal'>
@@ -67,7 +106,7 @@ function SignupFormModal() {
           <input
             type='text'
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             required
           />
         </label>
@@ -78,7 +117,7 @@ function SignupFormModal() {
           <input
             type='text'
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleUsernameChange}
             required
           />
         </label>
@@ -109,7 +148,7 @@ function SignupFormModal() {
           <input
             type='password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             required
           />
         </label>
@@ -120,7 +159,7 @@ function SignupFormModal() {
           <input
             type='password'
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={handleConfirmPasswordChange}
             required
           />
         </label>

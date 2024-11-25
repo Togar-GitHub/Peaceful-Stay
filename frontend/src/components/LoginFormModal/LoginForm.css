@@ -41,6 +41,11 @@ form input {
   box-sizing: border-box; /* Ensures padding is included in width */
 }
 
+.login-notes {
+  font-style: italic;
+  margin-top: 0;
+}
+
 /* Error message styling */
 .error {
   color: red;
@@ -66,4 +71,9 @@ form button:hover {
 
 form button:disabled {
   cursor: not-allowed;
+}
+
+.disabled-message {
+  font-size: 16px;
+  font-weight: bold;
 }

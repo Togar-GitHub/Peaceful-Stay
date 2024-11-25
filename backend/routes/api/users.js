@@ -106,8 +106,8 @@ router.post(
       return res.status(500).json({ 
         message: "User already exists",
         errors: {
-          email: "User with that email already exists",
-          username: "User with that username already exists"
+          email: "User with that email or username already exists",
+          username: "User with that username or email already exists"
         } 
       });
     };

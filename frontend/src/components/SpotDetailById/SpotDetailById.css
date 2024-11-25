@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   margin: 20px;
+  gap: 5px;
 }
 
 .main-container h3, h4 {
@@ -22,24 +23,23 @@
   margin-bottom: 5px;
 }
 
-/* Top container (name, location, and images) */
 .top-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 5px;
 }
 
-/* Left side in the top container (name, city, main image) */
 .top-left-side {
-  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
   padding-right: 20px;
 }
 
 /* Main image styling */
 .main-image {
   width: 100%;
-  max-height: 100%;
+  height: 100%;
   object-fit: cover;
   margin-bottom: 20px;
 }
@@ -48,14 +48,15 @@
 .top-right-side {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 10px;
-  flex: 1 1 50%;
   padding-left: 20px;
+  height: auto;
 }
 
 .other-images {
   width: 100%;
-  height: 200px;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -65,11 +66,17 @@
   object-fit: cover;
 }
 
+.top-right-side .other-images {
+  max-width: 100%;
+  max-height: 430px;
+}
+
 /* Mid container (hosted by, description, price, reviews, and reserve) */
 .mid-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* Left side in the mid container (hosted by and description) */
