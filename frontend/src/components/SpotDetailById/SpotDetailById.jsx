@@ -33,15 +33,16 @@ function SpotDetailById() {
     return formattedDate;
   }
 
+  const reviewLength = reviewLists && Array.isArray(reviewLists.Reviews) 
+      ? reviewLists.Reviews.length 
+      : 0;
+
   if (loadingSpot) {
     return <p>Loading Spots...</p>
   }
   if (loadingReview) {
     return <p>Loading Reviews...</p>
   }
-
-  console.log('SPOT DETAIL > ', spotDetail);
-  console.log('REVIEW LISTS > ', reviewLists);
 
   return (
     <>
@@ -72,8 +73,8 @@ function SpotDetailById() {
               <h2 className='price'>${spotDetail.price} night</h2>
               <h3 className='rating'>
                 <IoIosStar />
-                {spotDetail.avgRating ? spotDetail.avgRating : 'New'}
-                {` - `}{reviewLists.Reviews.length} reviews
+                {spotDetail.avgRating ? spotDetail.avgRating : 'New'}{` - `}
+                {`${reviewLength} reviews`}
               </h3>
             </div>
             <button>Reserve</button>
@@ -83,10 +84,10 @@ function SpotDetailById() {
         <div className='bottom-container'>
           <h2>
             <IoIosStar />
-            {spotDetail.avgRating ? spotDetail.avgRating : 'New'}
-            {` - `}{reviewLists.Reviews.length} reviews
+            {spotDetail.avgRating ? spotDetail.avgRating : 'New'}{` - `}
+            {`${reviewLength} reviews`}
           </h2>
-          {reviewLists.Reviews.map((review) => (
+          {reviewLists?.Reviews?.map((review) => (
             <div key={reviewLists.id} className='review-list-details'>
               <h3>{review.User.firstName}</h3>
               <h4>{DisplayedDate({ updatedAt: review.updatedAt })}</h4>
