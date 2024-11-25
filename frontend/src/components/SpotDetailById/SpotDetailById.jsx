@@ -88,7 +88,7 @@ function SpotDetailById() {
               <div className='mid-rating-container'>
                 <IoIosStar />
                 <h2 className='mid-rating'>
-                  {spotDetail.avgRating ? spotDetail.avgRating.toFixed(1) : 'New'}
+                  {spotDetail.avgRating ? parseFloat(spotDetail.avgRating).toFixed(1) : 'New'}
                 </h2>
               </div>
               {
@@ -110,7 +110,7 @@ function SpotDetailById() {
           <div className='bottom-rating-reviews'>
             <span className='bottom-rating'>
                 <IoIosStar />
-                {spotDetail.avgRating ? spotDetail.avgRating.toFixed(1) : 'New'}
+                {spotDetail.avgRating ? parseFloat(spotDetail.avgRating).toFixed(1) : 'New'}
               {reviewLength > 0 && (
                 <div className='bottom-reviews-container'>
                   <GoDotFill />
