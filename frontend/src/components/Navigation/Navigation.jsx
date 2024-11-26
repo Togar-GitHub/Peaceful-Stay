@@ -2,37 +2,37 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from './ProfileButton';
 import peace from '../images/eco-friendly-recycling-concept.jpg';
-import './Navigation.css';
+import nvg from './Navigation.module.css';
 
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <ul id='nav-bar'>
-      <div className='nav-bar-left'>
-        <li className='logo-container'>
+    <ul id={nvg.navBar}>
+      <div className={nvg.navBarLeft}>
+        <li className={nvg.logoContainer}>
           <NavLink to="/">
-            <img id='logo' src={peace} />
+            <img id={nvg.logo} src={peace} />
           </NavLink>
         </li>
-        <li className='h1-container'>
-          <NavLink to="/" className='h1-name'>
-            <h1>Peaceful Stay</h1>
+        <li className={nvg.h1Container}>
+          <NavLink to="/" className={nvg.h1Name}>
+            <h1 className={nvg.h1Line}>Peaceful Stay</h1>
           </NavLink>
         </li>
       </div>
 
-      <div className='nav-bar-right'>
+      <div className={nvg.navBarRight}>
         {sessionUser && (
-          <li className='create-spot'>
-            <NavLink to="/createNewSpot" className='create-spot-link'>
+          <li className={nvg.createSpot}>
+            <NavLink to="/createNewSpot" className={nvg.createSpotLink}>
               Create a New Spot
             </NavLink>
           </li>
         )}
 
         {isLoaded && (
-          <li className='profile-button-container'>
+          <li className={nvg.profileButtonContainer}>
             <ProfileButton user={sessionUser} />
           </li>
         )}

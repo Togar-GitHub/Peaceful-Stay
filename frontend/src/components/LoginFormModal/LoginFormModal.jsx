@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import './LoginForm.css';
+import lgf from './LoginForm.module.css';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ function LoginFormModal() {
 
   return (
     <>
-    <div id='login-modal'>
+    <div id={lgf.loginModal}>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -80,7 +80,7 @@ function LoginFormModal() {
             required
           />
         </label>
-        <p className='login-notes'>Please enter your username or email at least 4 characters</p>
+        <p className={lgf.loginNotes}>Please enter your username or email at least 4 characters</p>
         <label>
           Password 
           <input
@@ -90,11 +90,11 @@ function LoginFormModal() {
             required
           />
         </label>
-        <p className='login-notes'>Please enter your password at least 6 characters</p>
-        {errors.credential && <p className='error'>{errors.credential}</p>}
+        <p className={lgf.loginNotes}>Please enter your password at least 6 characters</p>
+        {errors.credential && <p className={lgf.error}>{errors.credential}</p>}
 
         {isSubmitDisabled && (
-          <p className='disabled-message'>Please check your input before submitting</p>
+          <p className={lgf.disabledMessage}>Please check your input before submitting</p>
         )}
         <button 
           type='submit'
@@ -102,8 +102,8 @@ function LoginFormModal() {
           Log In
         </button>
 
-        <div className='demo-user-container'>
-          <span className='demo-user' onClick={demoUser}>Demo User</span>
+        <div className={lgf.demoUserContainer}>
+          <span className={lgf.demoUser} onClick={demoUser}>Demo User</span>
         </div>
 
       </form>

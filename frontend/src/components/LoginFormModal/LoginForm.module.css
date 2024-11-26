@@ -1,5 +1,5 @@
 /* Modal container */
-#login-modal {
+#loginModal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -14,7 +14,7 @@
 }
 
 /* Title styling */
-#login-modal h1 {
+#loginModal h1 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -41,7 +41,7 @@ form input {
   box-sizing: border-box; /* Ensures padding is included in width */
 }
 
-.login-notes {
+.loginNotes {
   font-style: italic;
   margin-top: 0;
 }
@@ -73,22 +73,22 @@ form button:disabled {
   cursor: not-allowed;
 }
 
-.disabled-message {
+.disabledMessage {
   font-size: 16px;
   font-weight: bold;
 }
 
-.demo-user-container {
+.demoUserContainer {
   margin-top: 40px;
   text-align: center;
 }
 
-.demo-user {
+.demoUser {
   font-size: 20px;
   font-weight: 700;
   text-decoration: underline;
 }
 
-.demo-user:hover {
+.demoUser:hover {
   cursor: pointer;
 }

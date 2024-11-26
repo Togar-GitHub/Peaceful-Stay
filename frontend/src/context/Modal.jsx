@@ -1,6 +1,6 @@
 import { useRef, useState, useContext, createContext } from 'react';
 import ReactDOM from 'react-dom';
-import './Modal.css';
+import mod from './Modal.module.css';
 
 const ModalContext = createContext();
 
@@ -42,9 +42,9 @@ export function Modal() {
   if (!modalRef || !modalRef.current || !modalContent) return null;
 
   return ReactDOM.createPortal(
-    <div id="modal">
-      <div id="modal-background" onClick={closeModal} />
-      <div id="modal-content">{modalContent}</div>
+    <div id={mod.modal}>
+      <div id={mod.modalBackground} onClick={closeModal} />
+      <div id={mod.modalContent}>{modalContent}</div>
     </div>,
     modalRef.current
   )

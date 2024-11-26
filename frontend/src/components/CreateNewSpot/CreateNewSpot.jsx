@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createNewSpotThunk, addSpotImageThunk } from '../../store/spot';
-import styles from './CreateNewSpot.module.css';
+import cns from './CreateNewSpot.module.css';
 
 function CreateNewSpot() {
   const [loadingSpot, setLoadingSpot] = useState(false);
@@ -89,15 +89,15 @@ function CreateNewSpot() {
   return (
     <>
     <form onSubmit={handleSubmit}>
-    <div className={styles.createMainContainer}>
-      <div className={styles.topContainer}>
-        <div className={styles.topDescription}>
+    <div className={cns.createMainContainer}>
+      <div className={cns.topContainer}>
+        <div className={cns.topDescription}>
           <h1>Create a new Spot</h1>
           <h2>Where&apos;s your place located?</h2>
           <p>Guests will only get your exact address once they booked a reservation</p>
         </div>
 
-        <div className={styles.topInputs}>
+        <div className={cns.topInputs}>
           <label>
             Country
             <input
@@ -107,7 +107,7 @@ function CreateNewSpot() {
               placeholder='Country'
               required
             />
-            {errors.country && <p className={styles.error}>{errors.country}</p>}
+            {errors.country && <p className={cns.error}>{errors.country}</p>}
           </label>
           <label>
             Street Address
@@ -118,9 +118,9 @@ function CreateNewSpot() {
               placeholder='Address'
               required
             />
-            {errors.address && <p className={styles.error}>{errors.address}</p>}
+            {errors.address && <p className={cns.error}>{errors.address}</p>}
           </label>
-          <div className={styles.cityStateContainer}>
+          <div className={cns.cityStateContainer}>
             <label>
               City
               <input
@@ -130,9 +130,9 @@ function CreateNewSpot() {
                 placeholder='City'
                 required
               />
-              {errors.city && <p className={styles.error}>{errors.city}</p>}
+              {errors.city && <p className={cns.error}>{errors.city}</p>}
             </label>
-            <p className={styles.comma}>, </p>
+            <p className={cns.comma}>, </p>
             <label>
               State
               <input
@@ -142,10 +142,10 @@ function CreateNewSpot() {
                 placeholder='STATE'
                 required
               />
-              {errors.state && <p className={styles.error}>{errors.state}</p>}
+              {errors.state && <p className={cns.error}>{errors.state}</p>}
             </label>
           </div>
-          <div className={styles.latLngContainer}>
+          <div className={cns.latLngContainer}>
             <label>
               Latitude
               <input
@@ -155,9 +155,9 @@ function CreateNewSpot() {
                 placeholder='Latitude'
                 required
               />
-              {errors.latitude && <p className={styles.error}>{errors.latitude}</p>}
+              {errors.latitude && <p className={cns.error}>{errors.latitude}</p>}
             </label>
-            <p className={styles.comma}>, </p>
+            <p className={cns.comma}>, </p>
             <label>
               Latitude
               <input
@@ -167,20 +167,20 @@ function CreateNewSpot() {
                 placeholder='Longitude'
                 required
               />
-              {errors.longitude && <p className={styles.error}>{errors.longitude}</p>}
+              {errors.longitude && <p className={cns.error}>{errors.longitude}</p>}
             </label>
           </div>
         </div>
       </div>
       <hr />
-      <div className={styles.midContainer}>
-        <div className={styles.midTopContainer}>
-          <div className={styles.midTopDescription}>
+      <div className={cns.midContainer}>
+        <div className={cns.midTopContainer}>
+          <div className={cns.midTopDescription}>
             <h2>Describe your place to guests</h2>
             <p>Mention the best features of your space, any special amenities,
                 like fast wifi or parking, and what you love about the neighborhood.</p>
           </div>
-          <div className={styles.midTopInput}>
+          <div className={cns.midTopInput}>
             <input
               type='text'
               value={description}
@@ -188,17 +188,17 @@ function CreateNewSpot() {
               placeholder='Please write at least 30 characters'
               required
             />
-            {errors.description && <p className={styles.error}>{errors.description}</p>}
+            {errors.description && <p className={cns.error}>{errors.description}</p>}
           </div>
         </div>
         <hr />
-        <div className={styles.midMiddleContainer}>
-          <div className={styles.midMiddleDescription}>
+        <div className={cns.midMiddleContainer}>
+          <div className={cns.midMiddleDescription}>
             <h2>Create a title for your spot</h2>
             <p>Catch a guests&apos; attention with a spot title that highlights
                 what makes your place special.</p>
           </div>
-          <div className={styles.midMiddleInput}>
+          <div className={cns.midMiddleInput}>
             <input
               type='text'
               value={name}
@@ -206,35 +206,35 @@ function CreateNewSpot() {
               placeholder='Name of your spot'
               required
             />
-            {errors.name && <p className={styles.error}>{errors.name}</p>}
+            {errors.name && <p className={cns.error}>{errors.name}</p>}
           </div>
         </div>
         <hr />
-        <div className={styles.midBottomContainer}>
-          <div className={styles.midBottomDescription}>
+        <div className={cns.midBottomContainer}>
+          <div className={cns.midBottomDescription}>
             <h2>Set a base price for your spot</h2>
             <p>Competitive pricing can help your listing stand out
                 and rank higher in search results.</p>
           </div>
-          <div className={styles.midBottomInput}>
-            <h3 className={styles.dollarSign}>$</h3>
+          <div className={cns.midBottomInput}>
+            <h3 className={cns.dollarSign}>$</h3>
             <input
               type='number'
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder='Price per night (USD)'
             />
-            {errors.price && <p className={styles.error}>{errors.price}</p>}
+            {errors.price && <p className={cns.error}>{errors.price}</p>}
           </div>
         </div>
       </div>
       <hr />
-      <div className={styles.bottomContainer}>
-        <div className={styles.bottomDescription}>
+      <div className={cns.bottomContainer}>
+        <div className={cns.bottomDescription}>
           <h2>Liven up your spot with photos</h2>
           <p>Submit a link to at least one photo to publish your spot.</p>
         </div>
-        <div className={styles.bottomInput}>
+        <div className={cns.bottomInput}>
           <input
             type='text'
             value={previewImage}
@@ -242,41 +242,41 @@ function CreateNewSpot() {
             placeholder='Preview Image URL'
             required
           />
-          {errors.prevImage && <p className={styles.error}>{errors.prevImage}</p>}
+          {errors.prevImage && <p className={cns.error}>{errors.prevImage}</p>}
           <input
             type='text'
             value={image1}
             onChange={(e) => setImage1(e.target.value)}
             placeholder='Image URL'
           />
-          {errors.image1 && <p className={styles.error}>{errors.image1}</p>}
+          {errors.image1 && <p className={cns.error}>{errors.image1}</p>}
           <input
             type='text'
             value={image2}
             onChange={(e) => setImage2(e.target.value)}
             placeholder='Image URL'
           />
-          {errors.image2 && <p className={styles.error}>{errors.image2}</p>}
+          {errors.image2 && <p className={cns.error}>{errors.image2}</p>}
           <input
             type='text'
             value={image3}
             onChange={(e) => setImage3(e.target.value)}
             placeholder='Image URL'
           />
-          {errors.image3 && <p className={styles.error}>{errors.image3}</p>}
+          {errors.image3 && <p className={cns.error}>{errors.image3}</p>}
           <input
             type='text'
             value={image4}
             onChange={(e) => setImage4(e.target.value)}
             placeholder='Image URL'
           />
-          {errors.image4 && <p className={styles.error}>{errors.image4}</p>}
+          {errors.image4 && <p className={cns.error}>{errors.image4}</p>}
         </div>
       </div>
       <hr />
 
       <button
-        className={styles.createSpotButton}
+        className={cns.createSpotButton}
         type='submit'
         disabled={isSubmitDisabled}>
         Create Spot

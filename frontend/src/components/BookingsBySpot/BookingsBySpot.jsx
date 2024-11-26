@@ -1,5 +1,5 @@
 // import { useParams, useEffect } from 'react-router-dom';
-import './BookingsBySpot.css'
+import bbs from './BookingsBySpot.module.css'
 
 function BookingsBySpot() {
   // const { spotId } = useParams();
@@ -16,7 +16,7 @@ function BookingsBySpot() {
 
   return (
     <>
-      <div className='feature-coming-soon'>
+      <div className={bbs.featureComingSoon}>
         <h1>Feature Coming Soon</h1>
       </div>
     </>

@@ -1,5 +1,5 @@
 /* Modal container */
-#signup-modal {
+#signupModal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -14,7 +14,7 @@
 }
 
 /* Title styling */
-#signup-modal h1 {
+#signupModal h1 {
   text-align: center;
   margin-bottom: 20px;
 }
@@ -42,7 +42,7 @@ form input {
   box-sizing: border-box; /* Ensures padding is included in width */
 }
 
-.signup-notes {
+.signupNotes {
   font-style: italic;
   margin-top: 0;
 }
@@ -70,7 +70,7 @@ form button:hover {
   background-color: #3d4dd6;
 }
 
-.disabled-message {
+.disabledMessage {
   font-size: 16px;
   font-weight: bold;
 }

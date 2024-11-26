@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
-import './SignupForm.css';
+import sfm from './SignupForm.module.css';
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -98,7 +98,7 @@ function SignupFormModal() {
 
   return (
     <>
-    <div id='signup-modal'>
+    <div id={sfm.signupModal}>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
@@ -110,8 +110,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        <p className='signup-notes'>Please enter email with @ in it</p>
-        {errors.email && <p className='error'>{errors.email}</p>}
+        <p className={sfm.signupNotes}>Please enter email with @ in it</p>
+        {errors.email && <p className={sfm.error}>{errors.email}</p>}
         <label>
           Username 
           <input
@@ -121,8 +121,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        <p className='signup-notes'>Please enter at least 4 characters for username</p>
-        {errors.username && <p className='error'>{errors.username}</p>}
+        <p className={sfm.signupNotes}>Please enter at least 4 characters for username</p>
+        {errors.username && <p className={sfm.error}>{errors.username}</p>}
         <label>
           First Name
           <input
@@ -132,7 +132,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p className='error'>{errors.firstName}</p>}
+        {errors.firstName && <p className={sfm.error}>{errors.firstName}</p>}
         <label>
           Last Name
           <input
@@ -142,7 +142,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p className='error'>{errors.lastName}</p>}
+        {errors.lastName && <p className={sfm.error}>{errors.lastName}</p>}
         <label>
           Password
           <input
@@ -152,8 +152,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        <p className='signup-notes'>Please have at least 6 characters for Password</p>
-        {errors.password && <p className='error'>{errors.password}</p>}
+        <p className={sfm.signupNotes}>Please have at least 6 characters for Password</p>
+        {errors.password && <p className={sfm.error}>{errors.password}</p>}
         <label>
           Confirm Password
           <input
@@ -163,11 +163,11 @@ function SignupFormModal() {
             required
           />
         </label>
-        <p className='signup-notes'>Please ensure the Confirm Password is the same with Password</p>
-        {errors.confirmPassword && <p className='error'>{errors.confirmPassword}</p>}
+        <p className={sfm.signupNotes}>Please ensure the Confirm Password is the same with Password</p>
+        {errors.confirmPassword && <p className={sfm.error}>{errors.confirmPassword}</p>}
         
         {isSubmitDisabled && (
-          <p className='disabled-message'>Please check your input before submitting</p>
+          <p className={sfm.disabledMessage}>Please check your input before submitting</p>
         )}
 
         <button 

@@ -1,4 +1,4 @@
-#nav-bar {
+#navBar {
   margin-top: 5px;
   height: 100px;
   background-color: aqua;
@@ -14,14 +14,14 @@
   padding: 0 20px;
 }
 
-.nav-bar-left {
+.navBarLeft {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
 }
 
-.logo-container {
+.logoContainer {
   display: flex;
   align-items: center;
 }
@@ -36,50 +36,51 @@
   box-shadow: rgba(10, 5, 71, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px;
 }
 
-.h1-container {
+.h1Container {
   display: flex;
   align-items: center;
 }
 
-h1 {
+.h1Line {
   margin: 0;
   font-size: 36px;
   text-decoration: none;
 }
 
-.h1-name {
+.h1Name {
   text-decoration: none;
 }
 
-.h1-name:hover {
+.h1Name:hover {
   cursor: pointer;
   text-decoration: underline;
 }
 
-.nav-bar-right {
+.navBarRight {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
 
-.create-spot {
+.createSpot {
   margin-right: 20px;
 }
 
-.create-spot-link {
+.createSpotLink {
   font-size: 24px;
   text-decoration: none;
 }
 
-.profile-button-container {
+.profileButtonContainer {
   margin-right: 40px;
 }
 
-.create-spot {
+.createSpot {
   font-size: 18px;
 }
 
-.create-spot-link:hover {
+.createSpotLink:hover {
   cursor: pointer;
   text-decoration: underline;
+  font-weight: bold;
 }

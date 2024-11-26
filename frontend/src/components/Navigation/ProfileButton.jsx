@@ -7,7 +7,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
-import './ProfileButton.css';
+import pbt from './ProfileButton.module.css';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  const ulClassName = showMenu ? pbt.profileDropdown : pbt.hidden;
 
   return (
     <>
@@ -53,24 +53,24 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-          <div id='user-details'>
-            <li className='hello-user'>
+          <div id={pbt.userDetails}>
+            <li className={pbt.helloUser}>
               <li>Hello {user.username}</li>
               <li>email: {user.email}</li>
             </li>
-            <li className='manage-spots'>
+            <li className={pbt.manageSpots}>
               <NavLink to="/api/spots/current">
                 <h4>Manage Spots</h4>
               </NavLink>
             </li>
-            <li className='logout-container'>
-              <button id='logout-button' onClick={logout}>Log Out</button>
+            <li className={pbt.logoutContainer}>
+              <button id={pbt.logoutButton} onClick={logout}>Log Out</button>
             </li>
           </div>
           </>
         ) : (
           <>
-          <div id='drop-login-signup' >
+          <div id={pbt.dropLoginSignup} >
             <li>
               <OpenModalMenuItem
                 itemText="Log In"

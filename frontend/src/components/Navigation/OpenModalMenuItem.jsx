@@ -1,5 +1,5 @@
 import { useModal } from '../../context/Modal';
-import './OpenModalMenu.css';
+import omi from './OpenModalMenu.module.css';
 
 function OpenModalMenuItem({
   modalComponent,
@@ -17,7 +17,7 @@ function OpenModalMenuItem({
 
   return (
     <li 
-      className='item'
+      className={omi.item}
       onClick={onClick}>{itemText}
     </li>
   );

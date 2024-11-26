@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { IoIosStar } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
-import './SpotDetailById.css';
+import sdi from './SpotDetailById.module.css';
 
 function SpotDetailById() {
   const { spotId } = useParams();
@@ -60,42 +60,42 @@ function SpotDetailById() {
 
   return (
     <>
-      <div className='main-container' style={{ marginTop: "100px" }}>
+      <div className={sdi.mainContainer} style={{ marginTop: "100px" }}>
       <h3>{spotDetail.name}</h3>
       <h4>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h4>
-        <div className='top-container'>
-          <div className='top-left-side'>
+        <div className={sdi.topContainer}>
+          <div className={sdi.topLeftSide}>
             <div>
-              <img className='main-image' src={spotDetail.previewImage} />
+              <img className={sdi.mainImage} src={spotDetail.previewImage} />
             </div>
           </div>
-          <div className='top-right-side'>
+          <div className={sdi.topRightSide}>
             {spotDetail.SpotImages.map((image) => (
-              <div key={spotDetail.SpotImages.id} className='other-images'>
+              <div key={spotDetail.SpotImages.id} className={sdi.otherImages}>
                 <img src={image.url} />
               </div>
             ))}
           </div>
         </div>
-        <div className='mid-container'> 
-          <div className='mid-left-side'>
+        <div className={sdi.midContainer}> 
+          <div className={sdi.midLeftSide}>
             <h2>Hosted by {spotDetail.Owner.firstName} {spotDetail.Owner.lastName}</h2>
             <p>{spotDetail.description}</p>
           </div>
-          <div className='mid-right-side'>
-            <div className='price-rating-container'>
-              <h2 className='price'>${spotDetail.price} night</h2>
-              <div className='mid-rating-container'>
+          <div className={sdi.midRightSide}>
+            <div className={sdi.priceRatingContainer}>
+              <h2 className={sdi.price}>${parseFloat(spotDetail.price).toFixed(2)} night</h2>
+              <div className={sdi.midRatingContainer}>
                 <IoIosStar />
-                <h2 className='mid-rating'>
+                <h2 className={sdi.midRating}>
                   {spotDetail.avgRating ? parseFloat(spotDetail.avgRating).toFixed(1) : 'New'}
                 </h2>
               </div>
               {
                 reviewLength > 0 && (
-                  <div className='mid-reviews-container'>
+                  <div className={sdi.midReviewsContainer}>
                     <GoDotFill />
-                    <h2 className='mid-reviews'>
+                    <h2 className={sdi.midReviews}>
                       {`${reviewLength} ${reviewLength === 1 ? 'review' : 'reviews'}`}
                     </h2>
                   </div> 
@@ -106,15 +106,15 @@ function SpotDetailById() {
           </div>
         </div>  
         <hr />
-        <div className='bottom-container'>
-          <div className='bottom-rating-reviews'>
-            <span className='bottom-rating'>
+        <div className={sdi.bottomContainer}>
+          <div className={sdi.bottomRatingReviews}>
+            <span className={sdi.bottomRating}>
                 <IoIosStar />
                 {spotDetail.avgRating ? parseFloat(spotDetail.avgRating).toFixed(1) : 'New'}
               {reviewLength > 0 && (
-                <div className='bottom-reviews-container'>
+                <div className={sdi.bottomReviewsContainer}>
                   <GoDotFill />
-                  <span className='bottom-reviews'>
+                  <span className={sdi.bottomReviews}>
                     {`${reviewLength} ${reviewLength === 1 ? 'review' : 'reviews'}`}
                   </span>
                 </div> 
@@ -122,12 +122,12 @@ function SpotDetailById() {
             </span>
           </div>
 
-          <div className='bottom-reviews-list'>
+          <div className={sdi.bottomReviewsList}>
             {!reviewLists?.Reviews || reviewLists?.Reviews?.length === 0 ? (
               <h3>Be the first to post a review!</h3>
             ) : (
               reviewLists?.Reviews?.map((review) => (
-                <div key={reviewLists.id} className='review-list-details'>
+                <div key={reviewLists.id} className={sdi.reviewListDetails}>
                   <h3>{review.User.firstName}</h3>
                   <h4>{DisplayedDate({ updatedAt: review.updatedAt })}</h4>
                   <p>{review.review}</p>

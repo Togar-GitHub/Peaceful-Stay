@@ -1,19 +1,3 @@
-/* .profile-dropdown {
-  display: block;
-  position: absolute;
-  top: 10%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  list-style-type: none;
-  margin-right: 10px;
-  width: 400px;
-  z-index: 1;
-}  */
-
 button {
   display: inline-flex;
   justify-content: center;
@@ -23,7 +7,7 @@ button {
   z-index: 10;
 }
 
-#drop-login-signup {
+#dropLoginSignup {
   display: block;
   position: absolute;
   top: 100%;
@@ -43,7 +27,7 @@ button {
   line-height: 2;
 }
 
-#user-details {
+#userDetails {
   display: block;
   position: absolute;
   top: 100%;
@@ -57,19 +41,17 @@ button {
   margin-right: 30px;
   width: 400px;
   z-index: 1;
-
-  
   font-family:Arial, Helvetica, sans-serif;
   font-size: 24px;
   line-height: 2;
 }
 
-#logout-button {
+#logoutButton {
   margin-top: 10px;
   font-size: 24px;
 }
 
-#logout-button:hover {
+#logoutButton:hover {
   cursor: pointer;
 }
 
