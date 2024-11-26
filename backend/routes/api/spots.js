@@ -490,7 +490,7 @@ router.post('/',
     requireAuth,
     async (req, res) => {
         const { id } = req.user;
-        const { address, city, state, country, lat, lng, name, description, price } = req.body
+        const { address, city, state, country, lat, lng, name, description, price, previewImage } = req.body
         let check = true;
 
         const isValidDecimal = (value) => !isNaN(value) && !isNaN(parseFloat(value));
@@ -504,6 +504,7 @@ router.post('/',
         if (!name || name.length < 2) check = false;
         if (!description || description.length < 2) check = false;
         if (!price || !isValidDecimal(price) || price < 0) check = false;
+        if (!previewImage) check = false;
         if (check === false) {
             return res.status(400).json({
                 message: "Bad Request",
@@ -516,7 +517,8 @@ router.post('/',
                   lng: "Longitude must be within -180 and 180",
                   name: "Name must be less than 50 characters",
                   description: "Description is required",
-                  price: "Price per day must be a positive number"
+                  price: "Price per day must be a positive number",
+                  previewImage: "Need a URL for preview Image"
                 }
             })
         }
@@ -538,6 +540,7 @@ router.post('/',
             spotDetail.name = name;
             spotDetail.description = description;
             spotDetail.price = parseFloat(price);
+            spotDetail.previewImage = previewImage;
 
             const createdSpot = await Spot.create(spotDetail);
 
@@ -553,7 +556,6 @@ router.post('/',
                 updatedAt: formattedUpdatedAt
             }
             delete formattedSpotDetail.avgRating;
-            delete formattedSpotDetail.previewImage;
             return res.status(201).json(formattedSpotDetail);
         } catch (error) {
             console.error(error);

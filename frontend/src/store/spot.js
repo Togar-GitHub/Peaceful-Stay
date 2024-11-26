@@ -1,9 +1,11 @@
-// import { csrfFetch } from "./csrf";
+import { csrfFetch } from "./csrf";
 
 // ACTION TYPES
 const GET_ALL_SPOTS = 'spot/GET_ALL_SPOTS';
 const GET_SPOT_DETAIL = 'spot/GET_SPOT_DETAIL';
 const GET_REVIEWS_BY_SPOT = 'spot/GET_REVIEWS_BY_SPOT';
+const CREATE_NEW_SPOT = 'spot/CREATE_NEW_SPOT';
+const ADD_SPOT_IMAGE = 'spot/ADD_SPOT_IMAGE';
 
 // ACTION CREATORS
 const getAllSpots = (spots) => {
@@ -24,6 +26,20 @@ const getReviewsBySpot = (reviewLists) => {
   return {
     type: GET_REVIEWS_BY_SPOT,
     reviewLists
+  }
+}
+
+const createNewSpot = (incomingSpot) => {
+  return {
+    type: CREATE_NEW_SPOT,
+    incomingSpot
+  }
+}
+
+const addSpotImage = (incomingSpotImage) => {
+  return {
+    type: ADD_SPOT_IMAGE,
+    incomingSpotImage
   }
 }
 
@@ -57,6 +73,34 @@ export const getReviewsBySpotThunk = (spotId) => async (dispatch) => {
   }
 }
 
+export const createNewSpotThunk = (incomingSpot) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(incomingSpot),
+  })
+
+  if (res.ok) {
+    const createdSpot = await res.json();
+    dispatch(createNewSpot(createdSpot));
+    return createdSpot;
+  }
+}
+
+export const addSpotImageThunk = (incomingSpotImage) => async (dispatch) => {
+  console.log('INCOMING SPOT IMAGE > ', incomingSpotImage);
+  const res = await csrfFetch(`/api/spots/${incomingSpotImage.spotId}/images`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(incomingSpotImage)
+  })
+
+  if (res.ok) {
+    const createdSpotImage = await res.json();
+    dispatch(addSpotImage(createdSpotImage));
+  }
+}
+
 // INITIAL STATE
 const initialState = { allSpots: [] };
 
@@ -71,6 +115,12 @@ const spotReducer = (state = initialState, action) => {
 
     case GET_REVIEWS_BY_SPOT:
       return { ...state, reviewLists: action.reviewLists }
+
+    case CREATE_NEW_SPOT:
+      return { ...state, newSpot: action.newSpot }
+
+    case ADD_SPOT_IMAGE:
+      return { ...state, newSpotImage: action.newSpotImage }
 
     default:
       return state;

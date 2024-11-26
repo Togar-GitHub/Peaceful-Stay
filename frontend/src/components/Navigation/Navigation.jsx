@@ -25,7 +25,7 @@ function Navigation({ isLoaded }) {
       <div className='nav-bar-right'>
         {sessionUser && (
           <li className='create-spot'>
-            <NavLink to='/api/spots' className='create-spot-link'>
+            <NavLink to="/createNewSpot" className='create-spot-link'>
               Create a New Spot
             </NavLink>
           </li>
