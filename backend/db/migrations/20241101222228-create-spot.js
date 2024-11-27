@@ -41,11 +41,11 @@ module.exports = {
         allowNull: false
       },
       lat: {
-        type: Sequelize.FLOAT(9, 6),
+        type: Sequelize.NUMERIC(9, 6),
         allowNull: false,
       },
       lng: {
-        type: Sequelize.FLOAT(9, 6),
+        type: Sequelize.NUMERIC(9, 6),
         allowNull: false
       },
       name: {

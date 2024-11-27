@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     stars: {
-      type: DataTypes.DECIMAL(2, 1),
+      type: DataTypes.NUMERIC(2, 1),
       allowNull: false,
       validate: {
         min: 1.0,
