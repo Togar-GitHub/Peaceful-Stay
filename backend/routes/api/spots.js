@@ -205,7 +205,7 @@ router.post('/:spotId/reviews',
                     const sum = allReviews.reduce((acc, el) => acc + el.stars, 0);
                     const avgRating = parseFloat((sum / allReviews.length).toFixed(1));
 
-                    spot.avgRating = parseFloat(avgRating);
+                    spot.avgRating = isNaN(avgRating) ? 1 : avgRating;
                     await spot.save();
 
                     return res.status(201).json(formattedNewReview)

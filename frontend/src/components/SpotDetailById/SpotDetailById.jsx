@@ -21,7 +21,7 @@ function SpotDetailById() {
  
   if (sessionUser) {
     reviewLists?.Reviews?.map((review) => {
-      console.log(review)
+      console.log('LIST OF REVIEW > ', review)
     })
   }
 

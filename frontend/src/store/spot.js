@@ -109,7 +109,6 @@ export const addSpotImageThunk = (incomingSpotImage) => async (dispatch) => {
 }
 
 export const createNewReviewThunk = (incomingReview) => async (dispatch) => {
-  console.log('INCOMING REVIEW THUNK > ', incomingReview);
   const res = await csrfFetch(`/api/spots/${incomingReview.spotId}/reviews`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
