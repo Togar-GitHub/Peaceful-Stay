@@ -32,7 +32,7 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
 
   const incomingReview = {
     userId: user.id,
-    spotId,
+    spotId: Number(spotId),
     review,
     stars: stars.length
   }

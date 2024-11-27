@@ -181,7 +181,7 @@ router.post('/:spotId/reviews',
             if (spot) {
                 const spotNewReview = {
                     userId: Number(id),
-                    spotId: spot.id,
+                    spotId: Number(spot.id),
                     review: review,
                     stars: parseFloat(stars)
                 }
