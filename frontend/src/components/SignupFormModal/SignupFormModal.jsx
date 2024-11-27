@@ -170,7 +170,7 @@ function SignupFormModal() {
           <p className={sfm.disabledMessage}>Please check your input before submitting</p>
         )}
 
-        <button 
+        <button className={sfm.buttonSubmit}
           type='submit'
           disabled={isSubmitDisabled}>
           Sign Up

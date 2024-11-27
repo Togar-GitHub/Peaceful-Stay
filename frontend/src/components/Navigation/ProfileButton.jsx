@@ -47,7 +47,7 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button onClick={toggleMenu}>
+      <button className={pbt.mainButton} onClick={toggleMenu}>
         <PiUserListBold size='60px' />
       </button>
       <ul className={ulClassName} ref={ulRef}>
@@ -58,11 +58,13 @@ function ProfileButton({ user }) {
               <li>Hello {user.username}</li>
               <li>email: {user.email}</li>
             </li>
+            <hr className={pbt.line} />
             <li className={pbt.manageSpots}>
               <NavLink to="/api/spots/current">
                 <h4>Manage Spots</h4>
               </NavLink>
             </li>
+            <hr className={pbt.line} />
             <li className={pbt.logoutContainer}>
               <button id={pbt.logoutButton} onClick={logout}>Log Out</button>
             </li>
@@ -71,20 +73,20 @@ function ProfileButton({ user }) {
         ) : (
           <>
           <div id={pbt.dropLoginSignup} >
-            <li>
+            <div className={pbt.loginSignup}>
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
                 modalComponent={<LoginFormModal />}
               />
-            </li>
-            <li>
+            </div>
+            <div className={pbt.loginSignup}>
               <OpenModalMenuItem
                 itemText="Sign Up"
                 onItemClick={closeMenu}
                 modalComponent={<SignupFormModal />}
               />
-            </li>
+            </div>
           </div>
           </>
         )}

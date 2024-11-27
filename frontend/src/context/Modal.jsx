@@ -18,12 +18,17 @@ export function ModalProvider({ children }) {
     }
   }
 
+  const openModal = (content) => {
+    setModalContent(content);
+  }
+
   const contextValue = {
     modalRef,
     modalContent,
     setModalContent,
     setOnModalClose,
-    closeModal
+    closeModal,
+    openModal
   };
 
   return (

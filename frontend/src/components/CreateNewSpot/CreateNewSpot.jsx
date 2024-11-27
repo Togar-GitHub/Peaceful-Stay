@@ -53,13 +53,10 @@ function CreateNewSpot() {
 
     try {
       const newSpot = await dispatch(createNewSpotThunk(incomingSpot));
-      console.log('NEW SPOT > ', newSpot);
 
       if (image1 || image2 || image3 || image4) {
         const images = [image1, image2, image3, image4].filter(img => img);
-        console.log('INPUT IMAGES > ', images)
         for (let img of images) {
-          console.log('READY FOR POST IMAGES > ', newSpot);
           const incomingSpotImage = {
             spotId: newSpot.id,
             url: img,
@@ -275,7 +272,7 @@ function CreateNewSpot() {
       </div>
       <hr />
 
-      <button
+      <button 
         className={cns.createSpotButton}
         type='submit'
         disabled={isSubmitDisabled}>

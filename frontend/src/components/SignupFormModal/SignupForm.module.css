@@ -55,7 +55,7 @@ form input {
 }
 
 /* Button styling */
-form button {
+.buttonSubmit {
   padding: 12px;
   background-color: #3d4dd6;
   color: white;
@@ -66,7 +66,7 @@ form button {
   margin-top: 20px;
 }
 
-form button:hover {
+.buttonSubmit:hover {
   background-color: #3d4dd6;
 }
 

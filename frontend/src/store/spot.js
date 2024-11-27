@@ -6,6 +6,7 @@ const GET_SPOT_DETAIL = 'spot/GET_SPOT_DETAIL';
 const GET_REVIEWS_BY_SPOT = 'spot/GET_REVIEWS_BY_SPOT';
 const CREATE_NEW_SPOT = 'spot/CREATE_NEW_SPOT';
 const ADD_SPOT_IMAGE = 'spot/ADD_SPOT_IMAGE';
+const CREATE_NEW_REVIEW = 'spot/CREATE_NEW_REVIEW';
 
 // ACTION CREATORS
 const getAllSpots = (spots) => {
@@ -40,6 +41,13 @@ const addSpotImage = (incomingSpotImage) => {
   return {
     type: ADD_SPOT_IMAGE,
     incomingSpotImage
+  }
+}
+
+const createNewReview = (incomingReview) => {
+  return {
+    type: CREATE_NEW_REVIEW,
+    incomingReview
   }
 }
 
@@ -88,7 +96,6 @@ export const createNewSpotThunk = (incomingSpot) => async (dispatch) => {
 }
 
 export const addSpotImageThunk = (incomingSpotImage) => async (dispatch) => {
-  console.log('INCOMING SPOT IMAGE > ', incomingSpotImage);
   const res = await csrfFetch(`/api/spots/${incomingSpotImage.spotId}/images`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -98,6 +105,20 @@ export const addSpotImageThunk = (incomingSpotImage) => async (dispatch) => {
   if (res.ok) {
     const createdSpotImage = await res.json();
     dispatch(addSpotImage(createdSpotImage));
+  }
+}
+
+export const createNewReviewThunk = (incomingReview) => async (dispatch) => {
+  console.log('INCOMING REVIEW THUNK > ', incomingReview);
+  const res = await csrfFetch(`/api/spots/${incomingReview.spotId}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(incomingReview)
+  })
+
+  if (res.ok) {
+    const createdReview = await res.json();
+    dispatch(createNewReview(createdReview));
   }
 }
 
@@ -121,6 +142,9 @@ const spotReducer = (state = initialState, action) => {
 
     case ADD_SPOT_IMAGE:
       return { ...state, newSpotImage: action.newSpotImage }
+
+    case CREATE_NEW_REVIEW:
+      return { ...state, newReview: action.newReview }
 
     default:
       return state;

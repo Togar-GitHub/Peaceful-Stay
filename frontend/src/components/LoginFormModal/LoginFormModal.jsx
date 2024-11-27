@@ -97,6 +97,7 @@ function LoginFormModal() {
           <p className={lgf.disabledMessage}>Please check your input before submitting</p>
         )}
         <button 
+          className={lgf.submitButton}
           type='submit'
           disabled={isSubmitDisabled}>
           Log In

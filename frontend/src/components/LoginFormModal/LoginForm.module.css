@@ -54,7 +54,7 @@ form input {
 }
 
 /* Button styling */
-form button {
+.submitButton {
   padding: 12px;
   background-color: #3d4dd6;
   color: white;
@@ -65,11 +65,11 @@ form button {
   margin-top: 20px;
 }
 
-form button:hover {
+.submitButton:hover {
   background-color: #3d4dd6;
 }
 
-form button:disabled {
+.submitButton:disabled {
   cursor: not-allowed;
 }
 

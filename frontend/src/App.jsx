@@ -7,6 +7,7 @@ import AllSpots from './components/AllSpots/AllSpots';
 import SpotDetailById from './components/SpotDetailById/SpotDetailById';
 import BookingsBySpot from './components/BookingsBySpot/BookingsBySpot';
 import CreateNewSpot from './components/CreateNewSpot/CreateNewSpot';
+import PostReviewModal from './components/PostReview/PostReviewModal';
 
 function Layout() {
   const dispatch = useDispatch();
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: '/createNewSpot',
         element: <CreateNewSpot />
+      },
+      {
+        path: '/postReview',
+        element: <PostReviewModal />
       },
       {
         path: '/reservation',

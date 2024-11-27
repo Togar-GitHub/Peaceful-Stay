@@ -1,32 +1,55 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSpotDetailThunk, getReviewsBySpotThunk } from '../../store/spot';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosStar } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
+import PostReviewModal from '../PostReview/PostReviewModal';
 import sdi from './SpotDetailById.module.css';
 
 function SpotDetailById() {
   const { spotId } = useParams();
   const [loadingSpot, setLoadingSpot] = useState(true);
   const [loadingReview, setLoadingReview] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
+  const sessionUser = useSelector(state => state.session.user);
   const spotDetail = useSelector((state) => state.spots.spotDetail);
   const reviewLists = useSelector((state) => state.spots.reviewLists);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+ 
+  let userHasReview;
+  if (sessionUser) {
+    userHasReview = reviewLists?.Reviews?.filter((review) => {
+      return sessionUser.id === review.userId
+  })}
 
+  // First useEffect for fetching spot details
   useEffect(() => {
     dispatch(getSpotDetailThunk(spotId)).finally(() => {
       setLoadingSpot(false);
     });
   }, [spotId, dispatch]);
 
+  // Second useEffect for fetching reviews, triggered after the spot details are loaded
   useEffect(() => {
     dispatch(getReviewsBySpotThunk(spotId)).finally(() => {
       setLoadingReview(false);
+      setIsReviewSubmitted(false); // Reset after fetching reviews
     });
-  }, [spotId, dispatch])
+  }, [loadingSpot, isReviewSubmitted, dispatch, spotId]);
+
+  function openModal() {
+    setShowModal(true);
+  }
+  function closeModal() {
+    setShowModal(false);
+    setIsReviewSubmitted(false);
+  }
+  function handleReviewSubmission() {
+    setIsReviewSubmitted(true);
+  }
 
   function DisplayedDate({ updatedAt }) {
     const date = new Date(updatedAt);
@@ -53,14 +76,20 @@ function SpotDetailById() {
   if (loadingSpot) {
     return <p>Loading Spots...</p>
   }
-
   if (loadingReview) {
     return <p>Loading Reviews...</p>
   }
 
   return (
     <>
-      <div className={sdi.mainContainer} style={{ marginTop: "100px" }}>
+      {showModal && <div className={sdi.overlay} onClick={closeModal}></div>}
+      {showModal && (
+        <div className={sdi.mainContainer}>
+          <PostReviewModal closeModal={closeModal} spotId={spotId} handleReviewSubmission={handleReviewSubmission}/>
+        </div>
+      )}
+
+      <div className={sdi.mainContainer} style={{ marginTop: "120px" }}>
       <h3>{spotDetail.name}</h3>
       <h4>{spotDetail.city}, {spotDetail.state}, {spotDetail.country}</h4>
         <div className={sdi.topContainer}>
@@ -102,10 +131,10 @@ function SpotDetailById() {
                 )
               }
             </div>
-            <button onClick={reservation}>Reserve</button>
+            <button className={sdi.buttonReservation} onClick={reservation}>Reserve</button>
           </div>
         </div>  
-        <hr />
+        <hr className={sdi.hrLine}/>
         <div className={sdi.bottomContainer}>
           <div className={sdi.bottomRatingReviews}>
             <span className={sdi.bottomRating}>
@@ -123,11 +152,21 @@ function SpotDetailById() {
           </div>
 
           <div className={sdi.bottomReviewsList}>
+
+            {sessionUser && sessionUser.id !== spotDetail.ownerId && (!userHasReview || userHasReview.length === 0) && (
+              <div className={sdi.postReview}>
+                <button onClick={openModal}
+                  className={sdi.buttonPostReview}>
+                  Post Your Review
+                </button>
+              </div>
+            )}
+
             {!reviewLists?.Reviews || reviewLists?.Reviews?.length === 0 ? (
               <h3>Be the first to post a review!</h3>
             ) : (
               reviewLists?.Reviews?.map((review) => (
-                <div key={reviewLists.id} className={sdi.reviewListDetails}>
+                <div key={review.id} className={sdi.reviewListDetails}>
                   <h3>{review.User.firstName}</h3>
                   <h4>{DisplayedDate({ updatedAt: review.updatedAt })}</h4>
                   <p>{review.review}</p>

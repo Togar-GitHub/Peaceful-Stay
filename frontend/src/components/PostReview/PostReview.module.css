@@ -1,0 +1,119 @@
+.mainContainer {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for true center */
+  width: 600px; /* Adjust width as needed */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.mainH2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.reviewContainer {
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+}
+
+.inputBox {
+  width: 100%;
+  padding: 10px;
+  height: 200px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+  text-align: left;;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.inputBox:focus {
+  border-color: #4CAF50;
+}
+
+.starRating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.starsContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+
+}
+
+.star {
+  cursor: pointer;
+  margin: 0 2px;
+  font-size: 2rem;
+  color: #ddd;
+  transition: color 0.3s;
+}
+
+.star:hover,
+.star.active {
+  color: #f39c12;
+}
+
+.filled {
+  color: #f39c12;
+}
+
+.empty {
+  color: #ddd;
+}
+
+.disabledMessage {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.buttonSubmit {
+  background-color: #0c640f;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  outline: none;
+  width: 100%;
+  max-width: 250px;
+  display: block;
+  margin-top: 10px;
+}
+
+.mainContainer .buttonSubmit {
+  margin: 10px auto;
+}
+
+.buttonSubmit:disabled {
+  background-color: #bd1717;
+  cursor: not-allowed;
+}
+
+.buttonSubmit:hover:enabled {
+  background-color: #45a049;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
