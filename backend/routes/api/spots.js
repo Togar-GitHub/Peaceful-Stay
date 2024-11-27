@@ -185,7 +185,6 @@ router.post('/:spotId/reviews',
                     review: review,
                     stars: parseFloat(stars)
                 }
-                console.log('SPOT NEW REVIEW > ', spotNewReview);
 
                 const newReview = await Review.create(spotNewReview);
 
@@ -200,16 +199,15 @@ router.post('/:spotId/reviews',
                         createdAt: formattedCreatedAt,
                         updatedAt: formattedUpdatedAt
                     }
-                    console.log('NEW FORMATTED REVIEW > ', formattedNewReview);
 
                     // update avgRating in Spots
                     const allReviews = await Review.findAll({ where: { spotId: spotId} })
                     const sum = allReviews.reduce((acc, el) => acc + el.stars, 0);
                     const avgRating = parseFloat((sum / allReviews.length).toFixed(1));
-                    console.log('AVG RATING FROM ALL REVIEWS > ', avgRating);
+
                     spot.avgRating = parseFloat(avgRating);
                     await spot.save();
-                    console.log('AFTER SPOT UPDATE > ', spot.avgRating);
+
                     return res.status(201).json(formattedNewReview)
                 } else {
                     return res.status(400).json({ 

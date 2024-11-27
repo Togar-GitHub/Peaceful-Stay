@@ -19,6 +19,12 @@ function SpotDetailById() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
  
+  if (sessionUser) {
+    reviewLists?.Reviews?.map((review) => {
+      console.log(review)
+    })
+  }
+
   let userHasReview;
   if (sessionUser) {
     userHasReview = reviewLists?.Reviews?.filter((review) => {
