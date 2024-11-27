@@ -57,11 +57,11 @@ module.exports = {
         allowNull: false
       },
       price: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.NUMERIC(10, 2),
         allowNull: false
       },
       avgRating: {
-        type: Sequelize.DECIMAL(2, 1)
+        type: Sequelize.NUMERIC(2, 1)
       },
       previewImage: {
         type: Sequelize.STRING(256)

@@ -94,11 +94,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.DECIMAL(10, 2),
+      type: DataTypes.NUMERIC(10, 2),
       allowNull: false
     },
     avgRating: {
-      type: DataTypes.DECIMAL(2, 1)
+      type: DataTypes.NUMERIC(2, 1)
     },
     previewImage: {
       type: DataTypes.STRING
