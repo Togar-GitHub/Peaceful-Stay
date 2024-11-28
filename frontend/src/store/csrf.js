@@ -12,7 +12,7 @@ export async function csrfFetch(url, options = {}) {
 
     const res = await window.fetch(url, options);
 
-    if (res.status >= 400) throw res;
+    // if (res.status >= 400) throw res; => to let the error handles in reducer thunk
 
     return res;
 }

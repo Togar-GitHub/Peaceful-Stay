@@ -18,12 +18,6 @@ function SpotDetailById() {
   const reviewLists = useSelector((state) => state.spots.reviewLists);
   const dispatch = useDispatch();
   const navigate = useNavigate();
- 
-  if (sessionUser) {
-    reviewLists?.Reviews?.map((review) => {
-      console.log('LIST OF REVIEW > ', review)
-    })
-  }
 
   let userHasReview;
   if (sessionUser) {

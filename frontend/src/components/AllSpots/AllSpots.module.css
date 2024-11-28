@@ -1,27 +1,50 @@
-.spotGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin: 20px;
-  padding-top: 120px;
-  height: 500px;
+/* Error message when no spots are available */
+.noSpotsMessage {
+  text-align: center;
+  font-size: 24px;
+  color: red;
+  font-weight: bold;
+  padding: 20px;
+  margin-top: 120px;
 }
 
+/* Main grid layout for the spots, always 4 across */
+.spotGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
+  gap: 20px; /* Adjust space between columns */
+  margin: 20px;
+  padding-top: 120px; /* Ensure the grid starts below the navbar */
+  height: auto; /* Let the height adjust based on content */
+  width: calc(100% - 40px); /* Account for the scrollbar width (20px margin on both sides) */
+  grid-auto-rows: minmax(300px, auto); /* Ensure each card has a consistent height */
+  overflow-x: auto; /* Prevent horizontal overflow */
+}
+
+/* Container for each individual spot */
 .spotCard {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  padding: 0;
+  position: relative;
+  background-color: white; /* Add background color for contrast */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensure the card takes up the full width available */
 }
 
+/* Styling for the spot image */
 .spotImage {
   width: 100%;
-  height: 400px;
+  height: 350px; /* Adjust the height to fit in the grid */
   object-fit: cover;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 10px;
 }
 
+/* Spot name styling */
 .spotName {
   position: absolute;
   top: 10px;
@@ -36,13 +59,15 @@
   background-color: lightblue;
   padding: 5px 10px;
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* On hover, show the spot name */
 .spotImageLink:hover .spotName {
   opacity: 1;
 }
 
+/* Info container (price, city, state, etc.) */
 .spotInfo {
   width: 100%;
   display: flex;
@@ -51,6 +76,7 @@
   padding: 10px;
 }
 
+/* Top row for city/state and rating */
 .topRow {
   display: flex;
   justify-content: space-between;
@@ -58,22 +84,125 @@
   margin-bottom: 10px;
 }
 
+/* Styling for the city, state, and price */
 .cityState, .price {
   margin: 0;
   color: rgb(45, 80, 175);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 2000;
+  margin-left: 20px;
 }
 
 .rating {
   margin: 0;
   color: rgb(45, 80, 175);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 2000;
   text-align: right;
+  margin-right: 20px;
 }
 
+/* Hover effect for each spot card */
 .spotCard:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
+
+/* Container for the bottom row (Update and Delete buttons) */
+.bottomContainer {
+  display: flex;
+  justify-content: space-between; /* Align buttons to the left and right */
+  width: 100%;
+  margin-top: 0px;
+  padding: 0 10px; /* Added padding to avoid buttons touching edges */
+}
+
+/* Ensure buttons only show when customProp is set */
+.bottomContainer.hidden {
+  display: none;
+}
+
+.updateSpotContainer {
+  margin-left: 20px;
+}
+
+.deleteSpotContainer {
+  margin-right: 20px;
+}
+
+/* Update and Delete buttons styling */
+.updateSpotButton,
+.deleteSpotButton {
+  padding: 10px 50px; /* Make buttons bigger */
+  font-size: 18px; /* Larger font size for better readability */
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  margin: 5px 0;
+  width: 100%; 
+}
+
+.deleteSpotButton {
+  background-color: #DC3545;
+}
+
+/* Hover effect for Update and Delete buttons */
+.updateSpotButton:hover {
+  background-color: #0056b3;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.deleteSpotButton:hover {
+  background-color: #c82333;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.topSide {
+  margin-bottom: -120px;
+}
+
+/* Create New Spot Button styling */
+.createSpotButton {
+  padding: 12px 25px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  margin-left: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for Create New Spot button */
+.createSpotButton:hover {
+  background-color: #218838;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Manage Your Spots section */
+.titleManageSpots {
+  display: block; /* By default it is visible, conditional visibility happens with customProp */
+  margin-bottom: 10px;
+  margin-top: 120px; /* Add top margin for visibility below the navbar */
+}
+
+.titleManageSpotsH2 {
+  font-size: 30px;
+  font-weight: bold;
+  color: darkblue;
+  margin-left: 20px;
+  margin-bottom: -5px;
+}
+
+
+
+
+

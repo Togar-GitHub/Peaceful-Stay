@@ -14,20 +14,21 @@
   display: block;
   position: absolute;
   top: 100%;
-  right: 0;
+  right: 50px;
   background-color: white;
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   list-style-type: none;
-  margin-right: 30px;
   width: 100%;
-  max-width: 400px;
+  max-width: 300px;
   z-index: 1;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 20px;
-  line-height: 1.6;
+  line-height: 1;
+  text-align: center;
+  margin-right: 20px;
 }
 
 #userDetails {
@@ -38,12 +39,13 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-#userDetails .helloUser {
-  margin-bottom: 15px;
+#userDetails .helloUser li {
+  margin-bottom: 10px;
 }
 
-#userDetails li {
-  margin-bottom: 10px;
+.manageSpots:hover {
+  cursor: pointer;
+  font-weight: 900;
 }
 
 #logoutButton {
@@ -60,11 +62,15 @@
 #logoutButton:hover {
   cursor: pointer;
   background-color: #c0392b;
+  font-weight: 900;
 }
 
 /* Styling for the container holding the login/signup menu */
 #dropLoginSignup {
-  display: block;
+  border-radius: 10px; /* Rounded corners */
+  width: 100%; /* Full width within the container */
+  padding: 10px;
+  /* display: block;
   position: absolute;
   top: 100%;
   right: 0;
@@ -75,7 +81,7 @@
   padding: 10px;
   width: 200px;
   z-index: 1;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif; */
 }
 
 /* Styling for individual login/signup items */
@@ -85,9 +91,8 @@
   margin-bottom: 10px; /* Space between items */
   border-radius: 8px; /* Rounded corners */
   font-size: 20px; /* Adjusted for readability */
-  font-weight: 600; /* Slightly bolder font */
   color: #333; /* Default text color */
-  text-align: left; /* Center align text */
+  text-align: center; /* Center align text */
   transition: background-color 0.3s, transform 0.2s; /* Smooth hover effect */
   text-decoration: none; /* Remove underline */
 }
@@ -98,9 +103,9 @@
   transform: translateY(-2px); /* Subtle lift effect */
   color: #660d0d; /* Change text color */
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  font-size: 24px;
   cursor: pointer;
   text-decoration: underline;
-  font-weight: bolder;
 }
 
 /* Focus state for accessibility */
@@ -109,7 +114,6 @@
   outline-offset: 2px; /* Adds space around the outline */
   background-color: #e6f7ff; /* Matches hover background */
 }
-
 
 .hidden {
   display: none;

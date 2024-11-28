@@ -2,17 +2,27 @@ import { csrfFetch } from "./csrf";
 
 // ACTION TYPES
 const GET_ALL_SPOTS = 'spot/GET_ALL_SPOTS';
+const GET_CURRENT_USER_SPOTS = 'spot/GET_CURRENT_USER_SPOTS';
 const GET_SPOT_DETAIL = 'spot/GET_SPOT_DETAIL';
 const GET_REVIEWS_BY_SPOT = 'spot/GET_REVIEWS_BY_SPOT';
 const CREATE_NEW_SPOT = 'spot/CREATE_NEW_SPOT';
 const ADD_SPOT_IMAGE = 'spot/ADD_SPOT_IMAGE';
 const CREATE_NEW_REVIEW = 'spot/CREATE_NEW_REVIEW';
+const SET_NO_SPOTS_AVAILABLE = 'spots/SET_NO_SPOTS_AVAILABLE';
+const CLEAR_NO_SPOTS_MESSAGE = 'spots/CLEAR_NO_SPOTS_MESSAGE';
 
 // ACTION CREATORS
 const getAllSpots = (spots) => {
   return {
     type: GET_ALL_SPOTS,
     spots
+  }
+}
+
+const getCurrentUserSpots = (spotsCurrent) => {
+  return {
+    type: GET_CURRENT_USER_SPOTS,
+    spotsCurrent
   }
 }
 
@@ -51,13 +61,41 @@ const createNewReview = (incomingReview) => {
   }
 }
 
+const setNoSpotsAvailable = (message) => {
+  return {
+    type: SET_NO_SPOTS_AVAILABLE,
+    message
+  }
+}
+
+const clearNoSpotsMessage = () => {
+  return {
+    type: CLEAR_NO_SPOTS_MESSAGE
+  }
+}
+
 // THUNK
 export const getAllSpotsThunk = () => async (dispatch) => {
   const res = await fetch('/api/spots');
 
   if (res.ok) {
     const spots = await res.json();
-    dispatch(getAllSpots(spots))
+    dispatch(getAllSpots(spots));
+    dispatch(clearNoSpotsMessage());
+  } else {
+    dispatch(setNoSpotsAvailable('No Spots available or failed to fetch Spots.'))
+  }
+}
+
+export const getCurrentUserSpotsThunk= () => async (dispatch) => {
+  const res = await csrfFetch('/api/spots/current');
+
+  if (res.ok) {
+    const spotsCurrent = await res.json();
+    dispatch(getCurrentUserSpots(spotsCurrent));
+    dispatch(clearNoSpotsMessage());
+  } else {
+    dispatch(setNoSpotsAvailable('No Spots available for this User or failed to fetch Spots.'))
   }
 }
 
@@ -122,13 +160,21 @@ export const createNewReviewThunk = (incomingReview) => async (dispatch) => {
 }
 
 // INITIAL STATE
-const initialState = { allSpots: [] };
+const initialState = { 
+  allSpots: [],
+  spotsCurrent: [],
+  noSpotsMessage: null,
+  error: null
+};
 
 // REDUCER
 const spotReducer = (state = initialState, action) => {
   switch(action.type) {
     case GET_ALL_SPOTS:
       return { ...state, allSpots: action.spots }
+
+    case GET_CURRENT_USER_SPOTS:
+      return { ...state, spotsCurrent: action.spotsCurrent }
 
     case GET_SPOT_DETAIL:
       return { ...state, spotDetail: action.spotDetail }
@@ -144,6 +190,12 @@ const spotReducer = (state = initialState, action) => {
 
     case CREATE_NEW_REVIEW:
       return { ...state, newReview: action.newReview }
+
+    case SET_NO_SPOTS_AVAILABLE:
+      return { ...state, noSpotsMessage: action.message }
+      
+    case CLEAR_NO_SPOTS_MESSAGE:
+      return { ...state, noSpotsMessage: null }
 
     default:
       return state;

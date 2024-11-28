@@ -14,6 +14,7 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const modalRef = useRef(null);
 
@@ -48,6 +49,11 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
       })
       .catch((error) => {
         console.error('Failed to submit review:', error);
+        if (error.response) {
+          setErrorMessage(`Error ${error.response.status}: ${error.response.data.message || 'An error occurred.'}`);
+        } else {
+          setErrorMessage('An unknown error occurred. Please try again.');
+        }
       });
   };
 
@@ -110,6 +116,7 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
     <>
       <div className={prv.mainContainer} ref={modalRef}>
         <h2 className={prv.mainH2}>How was your stay?</h2>
+        {errorMessage && <p className={prv.error}>{errorMessage}</p>}
         <form onSubmit={handleSubmit}>
           <div className={prv.reviewContainer}>
             <textarea

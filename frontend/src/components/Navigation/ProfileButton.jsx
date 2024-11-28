@@ -7,6 +7,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import { setCustomProp, clearCustomProp } from '../../store/customProp';
 import pbt from './ProfileButton.module.css';
 
 function ProfileButton({ user }) {
@@ -39,35 +40,49 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    dispatch(clearCustomProp());
     navigate('/');
     closeMenu();
   };
 
-  const ulClassName = showMenu ? pbt.profileDropdown : pbt.hidden;
+  const handleNavLinkClick = () => {
+    dispatch(setCustomProp('manageSpots'));
+  };
+  const handleLoginSuccess = () => {
+    dispatch(clearCustomProp());
+  };
+  const handleSignupSuccess = () => {
+    dispatch(clearCustomProp());
+  };
+
+  const divClassName = showMenu ? pbt.profileDropdown : pbt.hidden;
 
   return (
     <>
       <button className={pbt.mainButton} onClick={toggleMenu}>
         <PiUserListBold size='60px' />
       </button>
-      <ul className={ulClassName} ref={ulRef}>
+      <div className={divClassName} ref={ulRef}>
         {user ? (
           <>
           <div id={pbt.userDetails}>
-            <li className={pbt.helloUser}>
+            <div className={pbt.helloUser}>
               <li>Hello {user.username}</li>
               <li>email: {user.email}</li>
-            </li>
+            </div>
             <hr className={pbt.line} />
-            <li className={pbt.manageSpots}>
-              <NavLink to="/api/spots/current">
-                <h4>Manage Spots</h4>
+            <div className={pbt.manageSpots}>
+              <NavLink
+                to='/'
+                onClick={handleNavLinkClick}
+              >
+                <h4 className={pbt.manageSpots}>Manage Spots</h4>
               </NavLink>
-            </li>
+            </div>
             <hr className={pbt.line} />
-            <li className={pbt.logoutContainer}>
+            <div className={pbt.logoutContainer}>
               <button id={pbt.logoutButton} onClick={logout}>Log Out</button>
-            </li>
+            </div>
           </div>
           </>
         ) : (
@@ -77,20 +92,22 @@ function ProfileButton({ user }) {
               <OpenModalMenuItem
                 itemText="Log In"
                 onItemClick={closeMenu}
-                modalComponent={<LoginFormModal />}
+                modalComponent={<LoginFormModal 
+                onSuccess={handleLoginSuccess} />}
               />
             </div>
             <div className={pbt.loginSignup}>
               <OpenModalMenuItem
                 itemText="Sign Up"
                 onItemClick={closeMenu}
-                modalComponent={<SignupFormModal />}
+                modalComponent={<SignupFormModal 
+                onSuccess={handleSignupSuccess} />}
               />
             </div>
           </div>
           </>
         )}
-      </ul>
+      </div>
     </>
   );
 }

@@ -39,7 +39,11 @@ router.get('/current',
                     };
                 });
 
-                return res.status(200).json({ Spots: formattedSpots })
+                const displaySpots = {
+                    Spots: formattedSpots
+                }
+
+                return res.status(200).json(displaySpots)
             } else {
                 return res.status(404).json({ message: "User has no Spot." });
             }
@@ -654,7 +658,7 @@ router.get('/',
             }
 
             let pageNum = parseInt(page) || 1;
-            let sizeNum = parseInt(size) || 20
+            let sizeNum = parseInt(size) || 20;
             if (sizeNum > 20) sizeNum = 20;
 
             // if (minLat) minLat = minLat ? parseFloat(minLat) : null;
