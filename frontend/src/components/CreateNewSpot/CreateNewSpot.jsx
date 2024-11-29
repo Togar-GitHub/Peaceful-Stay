@@ -30,7 +30,6 @@ function CreateNewSpot() {
   const [errors, setErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
-  isUpdateButtonDisabled(true);
 
   useEffect(() => {
     if (customProp) {
@@ -395,7 +394,7 @@ function CreateNewSpot() {
       <button 
         className={cns.createSpotButton}
         type='submit'
-        disabled={isSubmitDisabled}>
+        disabled={customProp ? isUpdateButtonDisabled : isSubmitDisabled}>
         {customProp ? 'Update Spot' : 'Create Spot'}
       </button>
 
