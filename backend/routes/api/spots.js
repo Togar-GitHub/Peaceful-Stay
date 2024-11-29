@@ -53,7 +53,6 @@ router.get('/current',
         }
 })
 
-
 // POST (add) an Image to a Spot based on the Spot's Id
 router.post('/:spotId/images',
     requireAuth,
@@ -102,6 +101,68 @@ router.post('/:spotId/images',
             return res.status(500).json({ message: "An error occurred while adding a new image" })
         }   
 
+    }
+)
+
+// PUT (update) an Image of a Spot by the Image Id
+router.put('/:imageId/images',
+    async (req, res) => {
+        const { imageId } = req.params;
+        const { spotId, url, preview } = req.body;
+
+        try {
+            const spotImage = await SpotImage.findByPk(imageId)
+
+            if (spotImage) {
+
+                spotImage.spotId = Number(spotId);
+                spotImage.url = url;
+                spotImage.preview = preview;
+                const updatedSpotImage = await spotImage.save();
+
+                const formattedCreatedAt = updatedSpotImage.createdAt.toISOString().replace('T', ' ').slice(0, 19);
+                const formattedUpdatedAt = updatedSpotImage.updatedAt.toISOString().replace('T', ' ').slice(0, 19);
+
+                const formattedSpotImageDetail = {
+                    ...updatedSpotImage.toJSON(),
+                    createdAt: formattedCreatedAt,
+                    updatedAt: formattedUpdatedAt
+                }
+
+                return res.status(201).json(formattedSpotImageDetail);
+            } else {
+                return res.status(404).json({ message: "Spot Image couldn't be found" });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "An error occurred while adding a new image" })
+        }   
+
+    }
+)
+
+// DELETE a Spot Image by spotImageId
+router.delete('/:imageId/images',
+    async (req, res) => {
+        const { imageId } = req.params;
+
+        try {
+            const spotImageToDelete = await SpotImage.findByPk(imageId);
+
+            if (!spotImageToDelete || spotImageToDelete.length <= 0) {
+                return res.status(404).json({ message: "Spot couldn't be found" })
+            }
+
+            if (spotImageToDelete || spotImageToDelete.length > 0) {
+                await spotImageToDelete.destroy();
+                return res.status(200).json({ message: "Successfully deleted" });
+            } else {
+                return res.status(404).json({ message: "Spot Image couldn't be found" })
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "An error occurred while deleting a Spot Image" })
+        }
     }
 )
 
@@ -389,7 +450,7 @@ router.put('/:spotId',
     async (req, res) => {
         const { id } = req.user;
         const { spotId } = req.params;
-        const { address, city, state, country, lat, lng, name, description, price } = req.body
+        const { address, city, state, country, lat, lng, name, description, price, previewImage } = req.body
         let check = true;
 
         if (!address || address.length < 4) check = false;
@@ -401,6 +462,7 @@ router.put('/:spotId',
         if (!name || name.length < 2) check = false;
         if (!description || description.length < 2) check = false;
         if (!price || price < 0) check = false;
+        if (!previewImage) check = false;
         if (check === false) {
             return res.status(400).json({
                 message: "Bad Request",
@@ -413,7 +475,8 @@ router.put('/:spotId',
                   lng: "Longitude must be within -180 and 180",
                   name: "Name must be less than 50 characters",
                   description: "Description is required",
-                  price: "Price per day must be a positive number"
+                  price: "Price per day must be a positive number",
+                  previewImage: "Need a URL for preview Image"
                 }
             })
         }
@@ -436,9 +499,10 @@ router.put('/:spotId',
                 spotDetail.name = name;
                 spotDetail.description = description;
                 spotDetail.price = Number(price);
-
+                spotDetail.previewImage = previewImage;
+                console.log('backend spotDetail > ', spotDetail);
                 const updatedSpot = await spotDetail.save();
-
+                console.log('backend updated Spot > ', updatedSpot);
                 const formattedCreatedAt = updatedSpot.createdAt.toISOString().replace('T', ' ').slice(0, 19);
                 const formattedUpdatedAt = updatedSpot.updatedAt.toISOString().replace('T', ' ').slice(0, 19);
 

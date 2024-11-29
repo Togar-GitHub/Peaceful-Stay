@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getCurrentUserSpotsThunk, getAllSpotsThunk } from '../../store/spot';
 import { IoIosStar } from "react-icons/io";
+import { setCustomProp, clearCustomProp } from '../../store/customProp';
 import asp from './AllSpots.module.css';
 
 function AllSpots() {
   const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const sessionUser = useSelector((state) => state.session.user)
   const spotsCurrent = useSelector((state) => state.spots.spotsCurrent)
   const allSpots = useSelector((state) => state.spots.allSpots);
   const noSpotsMessage = useSelector((state) => state.spots.noSpotsMessage);
@@ -35,12 +34,15 @@ function AllSpots() {
   }, [customProp, dispatch]);
 
   const createSpotNav = () => {
+    dispatch(clearCustomProp());
     navigate('/createNewSpot');
   }
-  const updateSpotNav = () => {
-    navigate('/updateSpot');
+  const updateSpotNav = (id) => {
+    dispatch(setCustomProp(id)),
+    navigate('/createNewSpot');
   }
   const deleteSpotNav = () => {
+    dispatch(clearCustomProp()),
     navigate('/deleteSpot');
   }
 
@@ -79,9 +81,9 @@ function AllSpots() {
       {(!noSpotsMessage && spots?.Spots?.length > 0) ? (
 
       <div className={asp.spotGrid}>
+        <>
         {
           spots?.Spots?.map((spot) => (
-          <>
             <div key={spot.id} className={asp.spotCard}>
               <NavLink to={`/api/spots/${spot.id}`} className={asp.spotImageLink}>
                 <img
@@ -105,7 +107,7 @@ function AllSpots() {
                 {customProp && (
                   <div className={asp.bottomContainer}>
                     <div className={asp.updateSpotContainer}>
-                      <button onClick={updateSpotNav}
+                      <button onClick={() => updateSpotNav(spot.id)}
                         className={asp.updateSpotButton}>
                         Update
                       </button>
@@ -119,9 +121,9 @@ function AllSpots() {
                   </div>
                 )}
             </div>
-          </>
           ))
         }
+      </>
       </div>
       ) : (
         !noSpotsMessage && <p>No Spots Available.</p>

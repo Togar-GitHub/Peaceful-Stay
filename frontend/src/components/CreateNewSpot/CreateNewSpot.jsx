@@ -1,82 +1,202 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { createNewSpotThunk, addSpotImageThunk } from '../../store/spot';
+import { createNewSpotThunk, getSpotDetailThunk, updateSpotThunk } from '../../store/spot';
+import { addSpotImageThunk, updateSpotImageThunk, deleteSpotImageThunk } from '../../store/spot';
 import cns from './CreateNewSpot.module.css';
 
 function CreateNewSpot() {
   const [loadingSpot, setLoadingSpot] = useState(false);
-  const user = useSelector((state) => state.session.user)
-  // const newSpot = useSelector((state) => state.spots.newSpot)
-  // const newSpotImage = useSelector((state) => state.spots.newSpotImage)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [country, setCountry] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
-  const [description, setDescription] = useState('');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [previewImage, setPreviewImage] = useState('');
-  const [image1, setImage1] = useState('');
-  const [image2, setImage2] = useState('');
-  const [image3, setImage3] = useState('');
-  const [image4, setImage4] = useState('');
+  const customProp = useSelector((state) => state.customProp.customProp);
+  const [spotData, setSpotData] = useState({
+    country: '',
+    address: '',
+    city: '',
+    state: '',
+    latitude: '',
+    longitude: '',
+    description: '',
+    name: '',
+    price: '',
+    previewImage: '',
+    image1: '',
+    image2: '',
+    image3: '',
+    image4: '',
+  });
+  const [originalSpotData, setOriginalSpotData] = useState(null);
   const [errors, setErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
-  const incomingSpot = {
-    ownerId: user.id,
-    address,
-    city,
-    state,
-    country,
-    lat: latitude,
-    lng: longitude,
-    name,
-    description,
-    price,
-    previewImage
-  };
+  const [isUpdateButtonDisabled, setIsUpdateButtonDisabled] = useState(true);
+  isUpdateButtonDisabled(true);
 
   useEffect(() => {
-    const isValid = country && address && city && state && name && description.length >= 30 && price && previewImage;
+    if (customProp) {
+      const getSpotData = async () => {
+        setLoadingSpot(true);
+        try {
+          const spot = await dispatch(getSpotDetailThunk(customProp));
+          setOriginalSpotData(spot);
+          setSpotData({
+            id: spot.id,
+            country: spot.country,
+            address: spot.address,
+            city: spot.city,
+            state: spot.state,
+            latitude: spot.lat,
+            longitude: spot.lng,
+            description: spot.description,
+            name: spot.name,
+            price: spot.price,
+            previewImage: spot.previewImage,
+            image1: spot.SpotImages[0]?.url || null,
+            image2: spot.SpotImages[1]?.url || null,
+            image3: spot.SpotImages[2]?.url || null,
+            image4: spot.SpotImages[3]?.url || null
+          })
+        } catch (err) {
+          setErrors({ general: 'Error fetching spot data, please try again later.' });
+          console.error('Error fetching Spot data:', err);
+        } finally {
+          setLoadingSpot(false);
+        }
+      };
+      getSpotData();
+    }
+  }, [customProp, dispatch]);
+
+  useEffect(() => {
+    const isValid = 
+      spotData.country && 
+      spotData.address && 
+      spotData.city && 
+      spotData.state && 
+      spotData.name && 
+      spotData.description.length >= 30 && 
+      spotData.price && 
+      spotData.previewImage;
     setIsSubmitDisabled(!isValid);
-  }, [country, address, city, state, name, description, price, previewImage]);
+  }, [spotData]);
+
+  useEffect(() => {
+    const isChanged = Object.keys(spotData).some((key) => spotData[key] !== originalSpotData?.[key]);
+    setIsUpdateButtonDisabled(!isChanged);
+  }, [spotData, originalSpotData])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({})
+    setLoadingSpot(true);
 
     try {
-      const newSpot = await dispatch(createNewSpotThunk(incomingSpot));
+      let returnSpot;
+      if (customProp) {
+        const incomingSpot = {
+          address: spotData.address,
+          city: spotData.city,
+          state: spotData.state,
+          country: spotData.country,
+          lat: Number(spotData.latitude),
+          lng: Number(spotData.longitude),
+          name: spotData.name,
+          description: spotData.description,
+          price: Number(spotData.price),
+          previewImage: spotData.previewImage
+        }
+        returnSpot = await dispatch(updateSpotThunk(customProp, incomingSpot))
 
-      if (image1 || image2 || image3 || image4) {
-        const images = [image1, image2, image3, image4].filter(img => img);
-        for (let img of images) {
-          const incomingSpotImage = {
-            spotId: newSpot.id,
-            url: img,
-            preview: true
-          };
-          await dispatch(addSpotImageThunk(incomingSpotImage));
+        if (returnSpot) {
+          const oldImagesId = [
+            originalSpotData.SpotImages[0]?.id || null,
+            originalSpotData.SpotImages[1]?.id || null,
+            originalSpotData.SpotImages[2]?.id || null,
+            originalSpotData.SpotImages[3]?.id || null
+          ]
+          const oldImages = [
+            originalSpotData.SpotImages[0]?.url || null,
+            originalSpotData.SpotImages[1]?.url || null,
+            originalSpotData.SpotImages[2]?.url || null,
+            originalSpotData.SpotImages[3]?.url || null
+          ]
+          const newImages = [
+            spotData.image1,
+            spotData.image2,
+            spotData.image3,
+            spotData.image4
+          ]
+
+          for (let i = 0; i < 4; i++) {
+            const oldImageId = oldImagesId[i];
+            const oldImage = oldImages[i];
+            const newImage = newImages[i];
+          
+            if (newImage && !oldImage) {
+              const incomingSpotImage = {
+                spotId: Number(customProp),
+                url: newImage,
+                preview: true
+              };
+              await dispatch(addSpotImageThunk(incomingSpotImage));
+            }
+
+            if (!newImage && oldImage) {
+              const imageIdToDelete = oldImageId;
+              if (imageIdToDelete) {
+                await dispatch(deleteSpotImageThunk(imageIdToDelete));
+              }
+            }
+
+            if (newImage && oldImage && newImage !== oldImage) {
+              const imageIdToUpdate = oldImageId;
+              if (imageIdToUpdate) {
+                const incomingUpdateSpotImage = {
+                  spotId: returnSpot.id,
+                  url: newImage,
+                  preview: true
+                }
+                await dispatch(updateSpotImageThunk(imageIdToUpdate, incomingUpdateSpotImage));
+              }
+            }
+          }
+        }
+      } else {
+
+        returnSpot = await dispatch(createNewSpotThunk(spotData));
+
+        if (spotData.image1 || 
+            spotData.image2 || 
+            spotData.image3 || 
+            spotData.image4) {
+              const images = [
+                spotData.image1, 
+                spotData.image2, 
+                spotData.image3, 
+                spotData.image4
+              ].filter(img => img);
+
+              for (let img of images) {
+                const incomingSpotImage = {
+                  spotId: returnSpot.id,
+                  url: img,
+                  preview: true
+                };
+                await dispatch(addSpotImageThunk(incomingSpotImage));
+              }
+            }
+        }
+        setLoadingSpot(false);
+        navigate(`/api/spots/${customProp}`)
+      } catch (err) {
+        setLoadingSpot(false);
+        if (err && err.data && err.data.errors) {
+          setErrors(err.data.errors); 
+        } else {
+          console.error('An error occurred:', err);
+          setErrors({ general: 'Something went wrong, please try again later.' });
         }
       }
-      setLoadingSpot(false);
-
-      navigate(`/api/spots/${newSpot.id}`)
-    } catch (err) {
-      setLoadingSpot(false);
-      if (err && err.data && err.data.errors) {
-        setErrors(err.data.errors); 
-      } else {
-        console.error('An error occurred:', err);
-        setErrors({ general: 'Something went wrong, please try again later.' });
-      }
-    }
   };
 
   if (loadingSpot) {
@@ -89,7 +209,7 @@ function CreateNewSpot() {
     <div className={cns.createMainContainer}>
       <div className={cns.topContainer}>
         <div className={cns.topDescription}>
-          <h1>Create a new Spot</h1>
+          <h1>{customProp ? 'Update Your Spot' : 'Create a New Spot'}</h1>
           <h2>Where&apos;s your place located?</h2>
           <p>Guests will only get your exact address once they booked a reservation</p>
         </div>
@@ -99,8 +219,8 @@ function CreateNewSpot() {
             Country
             <input
               type='text'
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              value={spotData.country}
+              onChange={(e) => setSpotData({ ...spotData, country: e.target.value })}
               placeholder='Country'
               required
             />
@@ -110,8 +230,8 @@ function CreateNewSpot() {
             Street Address
             <input
               type='text'
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              value={spotData.address}
+              onChange={(e) => setSpotData({ ...spotData, address: e.target.value })}
               placeholder='Address'
               required
             />
@@ -122,8 +242,8 @@ function CreateNewSpot() {
               City
               <input
                 type='text'
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
+                value={spotData.city}
+                onChange={(e) => setSpotData({ ...spotData, city: e.target.value })}
                 placeholder='City'
                 required
               />
@@ -134,8 +254,8 @@ function CreateNewSpot() {
               State
               <input
                 type='text'
-                value={state}
-                onChange={(e) => setState(e.target.value)}
+                value={spotData.state}
+                onChange={(e) => setSpotData({ ...spotData, state: e.target.value })}
                 placeholder='STATE'
                 required
               />
@@ -147,8 +267,8 @@ function CreateNewSpot() {
               Latitude
               <input
                 type='text'
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
+                value={spotData.latitude}
+                onChange={(e) => setSpotData({ ...spotData, latitude: e.target.value })}
                 placeholder='Latitude'
                 required
               />
@@ -159,8 +279,8 @@ function CreateNewSpot() {
               Latitude
               <input
                 type='text'
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
+                value={spotData.longitude}
+                onChange={(e) => setSpotData({ ...spotData, longitude: e.target.value })}
                 placeholder='Longitude'
                 required
               />
@@ -180,8 +300,8 @@ function CreateNewSpot() {
           <div className={cns.midTopInput}>
             <input
               type='text'
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={spotData.description}
+              onChange={(e) => setSpotData({ ...spotData, description: e.target.value })}
               placeholder='Please write at least 30 characters'
               required
             />
@@ -198,8 +318,8 @@ function CreateNewSpot() {
           <div className={cns.midMiddleInput}>
             <input
               type='text'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={spotData.name}
+              onChange={(e) => setSpotData({ ...spotData, name: e.target.value })}
               placeholder='Name of your spot'
               required
             />
@@ -217,8 +337,8 @@ function CreateNewSpot() {
             <h3 className={cns.dollarSign}>$</h3>
             <input
               type='number'
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={spotData.price}
+              onChange={(e) => setSpotData({ ...spotData, price: e.target.value })}
               placeholder='Price per night (USD)'
             />
             {errors.price && <p className={cns.error}>{errors.price}</p>}
@@ -234,37 +354,37 @@ function CreateNewSpot() {
         <div className={cns.bottomInput}>
           <input
             type='text'
-            value={previewImage}
-            onChange={(e) => setPreviewImage(e.target.value)}
+            value={spotData.previewImage}
+            onChange={(e) => setSpotData({ ...spotData, previewImage: e.target.value })}
             placeholder='Preview Image URL'
             required
           />
           {errors.prevImage && <p className={cns.error}>{errors.prevImage}</p>}
           <input
             type='text'
-            value={image1}
-            onChange={(e) => setImage1(e.target.value)}
+            value={spotData.image1}
+            onChange={(e) => setSpotData({ ...spotData, image1: e.target.value })}
             placeholder='Image URL'
           />
           {errors.image1 && <p className={cns.error}>{errors.image1}</p>}
           <input
             type='text'
-            value={image2}
-            onChange={(e) => setImage2(e.target.value)}
+            value={spotData.image2}
+            onChange={(e) => setSpotData({ ...spotData, image2: e.target.value })}
             placeholder='Image URL'
           />
           {errors.image2 && <p className={cns.error}>{errors.image2}</p>}
           <input
             type='text'
-            value={image3}
-            onChange={(e) => setImage3(e.target.value)}
+            value={spotData.image3}
+            onChange={(e) => setSpotData({ ...spotData, image3: e.target.value })}
             placeholder='Image URL'
           />
           {errors.image3 && <p className={cns.error}>{errors.image3}</p>}
           <input
             type='text'
-            value={image4}
-            onChange={(e) => setImage4(e.target.value)}
+            value={spotData.image4}
+            onChange={(e) => setSpotData({ ...spotData, image4: e.target.value })}
             placeholder='Image URL'
           />
           {errors.image4 && <p className={cns.error}>{errors.image4}</p>}
@@ -276,7 +396,7 @@ function CreateNewSpot() {
         className={cns.createSpotButton}
         type='submit'
         disabled={isSubmitDisabled}>
-        Create Spot
+        {customProp ? 'Update Spot' : 'Create Spot'}
       </button>
 
     </div>

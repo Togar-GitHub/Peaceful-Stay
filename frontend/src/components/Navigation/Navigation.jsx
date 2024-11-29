@@ -13,6 +13,10 @@ function Navigation({ isLoaded }) {
     dispatch(clearCustomProp());
   }
 
+  const clearCustomPropLink = () => {
+    dispatch(clearCustomProp());
+  }
+
   return (
     <ul id={nvg.navBar}>
       <div className={nvg.navBarLeft}>
@@ -34,7 +38,9 @@ function Navigation({ isLoaded }) {
       <div className={nvg.navBarRight}>
         {sessionUser && (
           <li className={nvg.createSpot}>
-            <NavLink to="/createNewSpot" className={nvg.createSpotLink}>
+            <NavLink to="/createNewSpot" 
+            className={nvg.createSpotLink}
+            onClick={clearCustomPropLink}>
               Create a New Spot
             </NavLink>
           </li>
