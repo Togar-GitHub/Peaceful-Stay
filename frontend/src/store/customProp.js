@@ -1,4 +1,3 @@
-// store/actions/customPropActions.js
 export const setCustomProp = (customProp) => {
   return {
     type: 'SET_CUSTOM_PROP',

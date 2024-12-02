@@ -50,8 +50,8 @@
 
 #logoutButton {
   margin-top: 10px;
-  font-size: 20px; /* Adjusted font size */
-  background-color: #e74c3c; /* Red color for logout */
+  font-size: 20px;
+  background-color: #e74c3c;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -65,54 +65,38 @@
   font-weight: 900;
 }
 
-/* Styling for the container holding the login/signup menu */
 #dropLoginSignup {
-  border-radius: 10px; /* Rounded corners */
-  width: 100%; /* Full width within the container */
-  padding: 10px;
-  /* display: block;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 100%;
   padding: 10px;
-  width: 200px;
-  z-index: 1;
-  font-family: Arial, Helvetica, sans-serif; */
 }
 
-/* Styling for individual login/signup items */
 .loginSignup {
   display: block;
   padding: 10px 15px;
-  margin-bottom: 10px; /* Space between items */
-  border-radius: 8px; /* Rounded corners */
-  font-size: 20px; /* Adjusted for readability */
-  color: #333; /* Default text color */
-  text-align: center; /* Center align text */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth hover effect */
-  text-decoration: none; /* Remove underline */
+  margin-bottom: 10px;
+  border-radius: 8px;
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+  transition: background-color 0.3s, transform 0.2s;
+  text-decoration: none;
 }
 
-/* Hover effect for login/signup items */
 .loginSignup:hover {
-  background-color: #e6f7ff; /* Light blue background */
-  transform: translateY(-2px); /* Subtle lift effect */
-  color: #660d0d; /* Change text color */
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  background-color: #e6f7ff;
+  transform: translateY(-2px);
+  color: #660d0d;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   font-size: 24px;
   cursor: pointer;
   text-decoration: underline;
 }
 
-/* Focus state for accessibility */
 .loginSignup:focus {
-  outline: 2px solid #2f82db; /* Blue outline for focus */
-  outline-offset: 2px; /* Adds space around the outline */
-  background-color: #e6f7ff; /* Matches hover background */
+  outline: 2px solid #2f82db;
+  outline-offset: 2px;
+  background-color: #e6f7ff;
 }
 
 .hidden {
