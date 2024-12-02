@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as sessionActions from '../../store/session';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import lgf from './LoginForm.module.css';
 
@@ -10,28 +10,51 @@ function LoginFormModal() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const loginMessage = useSelector((state) => state.session.errorMessage);
   const { closeModal } = useModal();
+  const [shouldClose, setShouldClose] = useState(false);
+
+  useEffect(() => {
+    if (shouldClose && Object.keys(errors).length === 0 && !loginMessage) {
+      closeModal();
+    }
+  }, [shouldClose, errors, loginMessage, closeModal])
 
   const demoUser = (e) => {
     e.preventDefault();
     setErrors({});
+    setIsSubmitted(false);
     return dispatch(sessionActions.login({ credential: 'johndoe', password: 'password1' }))
-      .then(closeModal)
+    .then(() => {
+      if (Object.keys(errors).length === 0 && !loginMessage) {
+        setIsSubmitted(true);
+        closeModal();
+      }
+    })
       .catch(async (res) => {
         const data = await res.json();
         if (data?.errors) setErrors(data.errors);
+        setIsSubmitted(true);
       }
     );
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsSubmitDisabled(true);
     setErrors({});
+    setIsSubmitted(true);
     return dispatch(sessionActions.login({ credential, password }))
-      .then(closeModal)
+      .then(() => {
+        if (Object.keys(errors).length === 0 && !loginMessage) {
+          setShouldClose(true);
+        }
+      })
       .catch(async (res) => {
         const data = await res.json();
         if (data?.errors) setErrors(data.errors);
+        setShouldClose(false);
       }
     );
   };
@@ -70,6 +93,13 @@ function LoginFormModal() {
     <>
     <div id={lgf.loginModal}>
       <h1>Log In</h1>
+
+      {isSubmitted && loginMessage && (
+        <p className={lgf.errorMessage}>
+          {loginMessage}
+        </p>
+      )}
+
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email 

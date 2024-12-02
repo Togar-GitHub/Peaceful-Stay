@@ -3,20 +3,56 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { createNewReviewThunk, getReviewsBySpotThunk, getSpotDetailThunk } from '../../store/spot';
+import { getReviewByIdThunk, updateReviewThunk } from '../../store/review';
 import prv from './PostReview.module.css';
 
-function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
+function PostReviewModal({ closeModal, spotId, reviewAction, reviewIdValue, spotName }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
-  const [review, setReview] = useState('');
   const [stars, setStars] = useState([]);
-  const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const modalRef = useRef(null);
+  const [reviewData, setReviewData] = useState({
+    id: '',
+    userId: '',
+    spotId: '',
+    review: '',
+    stars: []
+  })
+
+  useEffect(() => {
+    if (reviewAction === 'update') {
+      const getReviewData = async () => {
+        try {
+          const reviewById = await dispatch(getReviewByIdThunk(reviewIdValue));
+
+          if (reviewById?.Reviews) {
+            setReviewData({
+              id: reviewById.id,
+              userId: reviewById.Reviews.userId,
+              spotId: reviewById.Reviews.spotId,
+              review: reviewById.Reviews.review,
+              stars: reviewById.Reviews.stars
+            })
+            setStars(Array(reviewById.Reviews.stars)
+              .fill(true)
+              .concat(Array(5 - reviewById.Reviews.stars)
+              .fill(false)))
+          } else {
+            setErrors({ general: 'Review data not found' })
+          }
+        } catch (err) {
+          setErrors({ general: 'Error fetching review data, please try again'});
+          console.error('Error fetching Review data:', err)
+        }
+      };
+      getReviewData();
+    }
+  }, [dispatch, reviewAction, reviewIdValue])
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -29,48 +65,30 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [closeModal, handleReviewSubmission]);
-
-  const incomingReview = {
-    userId: user.id,
-    spotId: Number(spotId),
-    review,
-    stars: stars.length
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(createNewReviewThunk(incomingReview))
-      .then(() => {
-        closeModal();
-        navigate(`/api/spots/${spotId}`, { replace: true});
-        dispatch(getSpotDetailThunk(spotId));
-        dispatch(getReviewsBySpotThunk(spotId));
-      })
-      .catch((error) => {
-        console.error('Failed to submit review:', error);
-        if (error.response) {
-          setErrorMessage(`Error ${error.response.status}: ${error.response.data.message || 'An error occurred.'}`);
-        } else {
-          setErrorMessage('An unknown error occurred. Please try again.');
-        }
-      });
-  };
+  }, [closeModal]);
 
   const handleReviewChange = (e) => {
     const value = e.target.value;
-    setReview(value);
+    setReviewData((prevData) => ({
+      ...prevData,
+      review: value
+    }));
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors };
       delete newErrors.review;
       return newErrors;
     })
   }
-
+  
   // handling Stars
   const handleStarClick = (value) => {
-    setRating(value);
-    setStars(Array(value).fill(true));
+    const newStars = Array(5).fill(false);
+    for (let i = 0; i < value; i++) {
+      newStars[i] = true;
+    }
+    setStars(newStars);
+    console.log('newStars > ', newStars);
+    // setStars(Array(value).fill(true).concat(Array(5 - value).fill(false)));
   }
 
   const handleMouseEnter = (value) => {
@@ -84,6 +102,8 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
   const renderStars = () => {
     const starElements = [];
     for (let i = 1; i <= 5; i++) {
+      const isFilled = hoveredRating >= i || stars[i - 1]
+
       starElements.push(
         <span
           key={i}
@@ -92,7 +112,8 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
           onMouseEnter={() => handleMouseEnter(i)}
           onMouseLeave={handleMouseLeave}
         >
-          {i <= (hoveredRating || rating) ? (
+          {/* {i <= (hoveredRating || rating) ? ( */}
+          {isFilled ? (
             <FaStar className={prv.filled} />
           ) : (
             <FaRegStar className={prv.empty} />
@@ -103,26 +124,65 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
     return starElements;
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const incomingReview = {
+      userId: user.id,
+      spotId: Number(spotId),
+      review: reviewData.review,
+      stars: stars.filter(Boolean).length
+    }
+
+    try {
+      if (reviewAction === 'update') {
+        await dispatch(updateReviewThunk(reviewIdValue, incomingReview))
+      } else {
+        await dispatch(createNewReviewThunk(incomingReview))
+      }
+
+      closeModal();
+      await dispatch(getSpotDetailThunk(spotId));
+      await dispatch(getReviewsBySpotThunk(spotId));
+      await navigate(`/spotDetail/${spotId}`);
+    } catch(error) {
+      console.error('Failed to submit review:', error);
+      if (error.response) {
+        setErrorMessage(`Error ${error.response.status}: ${error.response.data.message || 'An error occurred.'}`);
+      } else {
+        setErrorMessage('An unknown error occurred. Please try again.');
+      }
+    }
+  };
+
   useEffect(() => {
     const isValidForm = 
-      review.length >= 10 &&
-      stars.length >= 1 &&
+      (reviewData.review && reviewData.review.length >= 10) &&
+      stars.some(Boolean) &&
       Object.keys(errors).length === 0;
 
     setIsSubmitDisabled(!isValidForm);
-  }, [review, stars, errors]);
+  }, [reviewData.review, stars, errors]);
 
   return (
     <>
       <div className={prv.mainContainer} ref={modalRef}>
-        <h2 className={prv.mainH2}>How was your stay?</h2>
+        {reviewAction === 'update' ? (
+          <>
+            <h2 className={prv.mainH2}>How was your stay at</h2>
+            <h2 className={prv.mainH2}>{spotName}?</h2>
+          </>
+
+        ) : (
+          <h2 className={prv.mainH2}>How was your stay?</h2>
+        )}
+
         {errorMessage && <p className={prv.error}>{errorMessage}</p>}
         <form onSubmit={handleSubmit}>
           <div className={prv.reviewContainer}>
             <textarea
               className={prv.inputBox}
               type='text'
-              value={review}
+              value={reviewData.review}
               placeholder='Leave your review here - at least 10 characters'
               onChange={handleReviewChange}
               required
@@ -142,7 +202,7 @@ function PostReviewModal({ closeModal, spotId, handleReviewSubmission }) {
           <button className={prv.buttonSubmit}
             type='submit'
             disabled={isSubmitDisabled}>
-            Submit Your Review
+            {reviewAction === 'update' ? 'Update Your Review' : 'Submit Your Review'}
           </button>
 
         </form>

@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { getCurrentUserSpotsThunk, getAllSpotsThunk } from '../../store/spot';
+import { getCurrentUserSpotsThunk, getAllSpotsThunk, deleteSpotThunk } from '../../store/spot';
 import { IoIosStar } from "react-icons/io";
 import { setCustomProp, clearCustomProp } from '../../store/customProp';
+import DeleteSpotModal from '../DeleteSpotModal/DeleteSpotModal';
 import asp from './AllSpots.module.css';
 
 function AllSpots() {
   const [loading, setLoading] = useState(true);
+  const [spotToDelete, setSpotToDelete] = useState(null);
   const spotsCurrent = useSelector((state) => state.spots.spotsCurrent)
   const allSpots = useSelector((state) => state.spots.allSpots);
   const noSpotsMessage = useSelector((state) => state.spots.noSpotsMessage);
   const customProp = useSelector((state) => state.customProp.customProp);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const modalRef = useRef(null);
 
   let spots;
   if (customProp) {
@@ -33,18 +36,45 @@ function AllSpots() {
     }
   }, [customProp, dispatch]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setSpotToDelete(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const createSpotNav = () => {
     dispatch(clearCustomProp());
     navigate('/createNewSpot');
   }
   const updateSpotNav = (id) => {
-    dispatch(setCustomProp(id)),
+    dispatch(setCustomProp(id));
     navigate('/createNewSpot');
   }
-  const deleteSpotNav = () => {
-    dispatch(clearCustomProp()),
-    navigate('/deleteSpot');
+
+  const handleDeleteSpot = (id) => {
+    dispatch(deleteSpotThunk(id))
+      .then(() => {
+        dispatch(getCurrentUserSpotsThunk())
+          .finally(() => {
+            dispatch(setCustomProp('manageSpots'));
+            navigate('/');
+            closeModal();
+          });
+      })
+      .catch((error) => {
+        console.error('Error deleting Spot:', error);
+      })
   }
+
+  const closeModal = () => setSpotToDelete(null);
 
   if (loading) {
     return <p>Loading...</p>
@@ -61,12 +91,15 @@ function AllSpots() {
                   Manage Your Spots
                 </h2>
               </div>
-              <div className={asp.createNewSpotContainer}>
-                <button onClick={createSpotNav}
-                  className={asp.createSpotButton}>
-                  Create a New Spot
-                </button>
-              </div>
+
+              {noSpotsMessage && (
+                <div className={asp.createNewSpotContainer}>
+                  <button onClick={createSpotNav}
+                    className={asp.createSpotButton}>
+                    Create a New Spot
+                  </button>
+                </div>
+              )}
             </div>
           </>
         )}
@@ -85,7 +118,7 @@ function AllSpots() {
         {
           spots?.Spots?.map((spot) => (
             <div key={spot.id} className={asp.spotCard}>
-              <NavLink to={`/api/spots/${spot.id}`} className={asp.spotImageLink}>
+              <NavLink to={`/spotDetail/${spot.id}`} className={asp.spotImageLink}>
                 <img
                  src={spot.previewImage} 
                 //  alt={spot.name}
@@ -112,14 +145,16 @@ function AllSpots() {
                         Update
                       </button>
                     </div>
+
                     <div className={asp.deleteSpotContainer}>
-                      <button onClick={deleteSpotNav}
+                      <button
+                        onClick={() => setSpotToDelete(spot.id)}
                         className={asp.deleteSpotButton}>
                         Delete
                       </button>
                     </div>
                   </div>
-                )}
+                )}  
             </div>
           ))
         }
@@ -127,6 +162,18 @@ function AllSpots() {
       </div>
       ) : (
         !noSpotsMessage && <p>No Spots Available.</p>
+      )}
+
+      {spotToDelete && (
+        <div ref={modalRef}>
+          <DeleteSpotModal
+            onClose={closeModal}
+            onConfirm={() => {
+              handleDeleteSpot(spotToDelete);
+              closeModal();
+          }}
+          />
+        </div>
       )}
     </>
   );

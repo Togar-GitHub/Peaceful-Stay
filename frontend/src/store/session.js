@@ -3,6 +3,8 @@ import { csrfFetch } from "./csrf";
 // ACTION TYPES
 const SET_USER = 'session/SET_USER';
 const REMOVE_USER = 'session/REMOVE_USER';
+const SET_ERROR_MESSAGE = 'session/SET_ERROR_MESSAGE';
+const CLEAR_ERROR_MESSAGE = 'session/CLEAR_ERROR_MESSAGE';
 
 // ACTION CREATORS
 const setUser = (user) => {
@@ -15,6 +17,19 @@ const setUser = (user) => {
 const removeUser = () => {
   return {
     type: REMOVE_USER
+  }
+}
+
+const setErrorMessage = (message) => {
+  return {
+    type: SET_ERROR_MESSAGE,
+    message
+  }
+}
+
+const clearErrorMessage = () => {
+  return {
+    type: CLEAR_ERROR_MESSAGE
   }
 }
 
@@ -33,7 +48,10 @@ export const login = (user) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     dispatch(setUser(data.user));
+    dispatch(clearErrorMessage());
     return res;
+  } else {
+    dispatch(setErrorMessage('The credentials were invalid or not exist'))
   }
 }
 
@@ -79,6 +97,12 @@ const sessionReducer = (state = initialState, action) => {
 
     case REMOVE_USER:
       return { ...state, user: null}
+
+    case SET_ERROR_MESSAGE:
+      return { ...state, errorMessage: action.message }
+
+    case CLEAR_ERROR_MESSAGE:
+      return { ...state, errorMessage: null }
 
     default:
       return state

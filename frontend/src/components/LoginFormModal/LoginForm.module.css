@@ -92,3 +92,8 @@ form input {
 .demoUser:hover {
   cursor: pointer;
 }
+
+.errorMessage {
+  color: red;
+  font-size: 20px;
+}

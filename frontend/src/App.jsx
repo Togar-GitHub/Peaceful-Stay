@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/api/spots/:spotId',
+        path: '/spotDetail/:spotId',
         element: <SpotDetailById />
       },
       {

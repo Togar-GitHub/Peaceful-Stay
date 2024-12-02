@@ -13,6 +13,9 @@ function SpotDetailById() {
   const [loadingReview, setLoadingReview] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
+  const [reviewAction, setReviewAction] = useState(null);
+  const [reviewIdValue, setReviewIdValue] = useState(null);
+  const [spotName, setSpotName] = useState(null);
   const sessionUser = useSelector(state => state.session.user);
   const spotDetail = useSelector((state) => state.spots.spotDetail);
   const reviewLists = useSelector((state) => state.spots.reviewLists);
@@ -40,15 +43,15 @@ function SpotDetailById() {
     });
   }, [loadingSpot, isReviewSubmitted, dispatch, spotId]);
 
-  function openModal() {
+  function openModal(action, reviewId, spotCurrentName) {
+    setReviewAction(action);
+    setReviewIdValue(reviewId);
+    setSpotName(spotCurrentName);
     setShowModal(true);
   }
   function closeModal() {
     setShowModal(false);
     setIsReviewSubmitted(false);
-  }
-  function handleReviewSubmission() {
-    setIsReviewSubmitted(true);
   }
 
   function DisplayedDate({ updatedAt }) {
@@ -85,7 +88,13 @@ function SpotDetailById() {
       {showModal && <div className={sdi.overlay} onClick={closeModal}></div>}
       {showModal && (
         <div className={sdi.mainContainer}>
-          <PostReviewModal closeModal={closeModal} spotId={spotId} handleReviewSubmission={handleReviewSubmission}/>
+          <PostReviewModal 
+            closeModal={closeModal} 
+            spotId={spotId} 
+            reviewAction={reviewAction}
+            reviewIdValue={reviewIdValue}
+            spotName={spotName}
+          />
         </div>
       )}
 
@@ -155,7 +164,7 @@ function SpotDetailById() {
 
             {sessionUser && sessionUser.id !== spotDetail.ownerId && (!userHasReview || userHasReview.length === 0) && (
               <div className={sdi.postReview}>
-                <button onClick={openModal}
+                <button onClick={() => openModal('create', null, null)}
                   className={sdi.buttonPostReview}>
                   Post Your Review
                 </button>
@@ -170,6 +179,20 @@ function SpotDetailById() {
                   <h3>{review.User.firstName}</h3>
                   <h4>{DisplayedDate({ updatedAt: review.updatedAt })}</h4>
                   <p>{review.review}</p>
+
+                  {sessionUser && sessionUser.id !== spotDetail.ownerId && sessionUser.id === review.userId && (
+                    <div className={sdi.updateDeleteButtonContainer}>
+                      <div className={sdi.updateButton}>
+                        <button onClick={() => openModal('update', review.id, spotDetail.name)}
+                          className={sdi.updateButtonLink}>
+                          Update
+                        </button>
+                      </div>
+                      <div className={sdi.deleteButton}>
+                        <button className={sdi.deleteButtonLink}>Delete</button>
+                      </div>
+                    </div>
+                  )}
                 </div>
             )))}
           </div>

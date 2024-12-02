@@ -47,6 +47,7 @@ function ProfileButton({ user }) {
 
   const handleNavLinkClick = () => {
     dispatch(setCustomProp('manageSpots'));
+    closeMenu();
   };
   const handleLoginSuccess = () => {
     dispatch(clearCustomProp());

@@ -61,6 +61,42 @@ router.get(
     }
   }
   )
+
+// GET REVIEW BY reviewId
+router.get('/:reviewId',
+  requireAuth,
+  async (req, res) => {
+    const { id } = req.user;
+    const { reviewId } = req.params;
+
+    const review = await Review.findByPk(reviewId);
+
+    if (review) {
+
+      if (review.userId !== Number(id)) {
+        return res.status(403).json({ message: "You are not authorize to update this Review"})
+      }
+
+      if (!review || review.length <= 0) {
+        return res.status(404).json({ message: "Review couldn't be found" })
+      }
+
+      const formattedCreatedAt = review.createdAt.toISOString().replace('T', ' ').slice(0, 19);
+      const formattedUpdatedAt = review.updatedAt.toISOString().replace('T', ' ').slice(0, 19);
+
+      const formattedReviews = {
+          ...review.toJSON(),
+          stars: parseFloat(review.stars),
+          createdAt: formattedCreatedAt,
+          updatedAt: formattedUpdatedAt
+      }
+
+      return res.status(200).json({ Reviews: formattedReviews });
+    } else {
+      return res.status(404).json({ message: "There is no Review" })
+    }
+  }
+)
   
 
 //ADD IMAGE TO REVIEW

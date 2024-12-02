@@ -9,7 +9,7 @@ function CreateNewSpot() {
   const [loadingSpot, setLoadingSpot] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const customProp = useSelector((state) => state.customProp.customProp);
+  let customProp = useSelector((state) => state.customProp.customProp);
   const [spotData, setSpotData] = useState({
     country: '',
     address: '',
@@ -162,31 +162,46 @@ function CreateNewSpot() {
         }
       } else {
 
-        returnSpot = await dispatch(createNewSpotThunk(spotData));
+        const newSpot = {
+          address: spotData.address,
+          city: spotData.city,
+          state: spotData.state,
+          country: spotData.country,
+          lat: Number(spotData.latitude),
+          lng: Number(spotData.longitude),
+          name: spotData.name,
+          description: spotData.description,
+          price: Number(spotData.price),
+          previewImage: spotData.previewImage
+        }
+        returnSpot = await dispatch(createNewSpotThunk(newSpot));
 
-        if (spotData.image1 || 
-            spotData.image2 || 
-            spotData.image3 || 
-            spotData.image4) {
-              const images = [
-                spotData.image1, 
-                spotData.image2, 
-                spotData.image3, 
-                spotData.image4
-              ].filter(img => img);
+        if (returnSpot) {
+          if (spotData.image1 || 
+              spotData.image2 || 
+              spotData.image3 || 
+              spotData.image4) {
+                const images = [
+                  spotData.image1, 
+                  spotData.image2, 
+                  spotData.image3, 
+                  spotData.image4
+                ].filter(img => img);
 
-              for (let img of images) {
-                const incomingSpotImage = {
-                  spotId: returnSpot.id,
-                  url: img,
-                  preview: true
-                };
-                await dispatch(addSpotImageThunk(incomingSpotImage));
+                for (let img of images) {
+                  const incomingSpotImage = {
+                    spotId: returnSpot.id,
+                    url: img,
+                    preview: true
+                  };
+                  await dispatch(addSpotImageThunk(incomingSpotImage));
+                }
               }
             }
         }
         setLoadingSpot(false);
-        navigate(`/api/spots/${customProp}`)
+        customProp = returnSpot.id;
+        navigate(`/spotDetail/${customProp}`)
       } catch (err) {
         setLoadingSpot(false);
         if (err && err.data && err.data.errors) {
