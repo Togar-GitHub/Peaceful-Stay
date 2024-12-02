@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 //ACTION TYPES
 const GET_REVIEW_BY_ID = 'review/GET_REVIEW_BY_ID';
 const UPDATE_REVIEW = 'review/UPDATE_REVIEW';
+const DELETE_REVIEW = 'review/DELETE_REVIEW';
 
 // ACTION CREATORS
 const getReviewById = (reviewId) => {
@@ -20,6 +21,13 @@ const updateReview = (reviewId, incomingReview) => {
   }
 }
 
+const deleteReview = (reviewId) => {
+  return {
+    type: DELETE_REVIEW,
+    reviewId
+  }
+}
+
 // THUNK
 export const getReviewByIdThunk = (reviewId) => async (dispatch) => {
   const res = await csrfFetch(`/api/reviews/${reviewId}`);
@@ -32,17 +40,29 @@ export const getReviewByIdThunk = (reviewId) => async (dispatch) => {
 }
 
 export const updateReviewThunk = (reviewId, incomingReview) => async (dispatch) => {
-  console.log('update in thunk ', reviewId, incomingReview)
   const res = await csrfFetch(`/api/reviews/${reviewId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(incomingReview),
   })
-  console.log('return from update ', res)
+
   if (res.ok) {
     const updatedReview = await res.json();
     dispatch(updateReview(updatedReview));
     return updatedReview;
+  }
+}
+
+export const deleteReviewThunk = (reviewId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  })
+
+  if (res.ok) {
+    const deletedReview = await res.json();
+    dispatch(deleteReview(deletedReview));
+    return deletedReview; 
   }
 }
 
@@ -59,6 +79,9 @@ const reviewReducer = (state = initialState, action) => {
 
     case UPDATE_REVIEW:
       return { ...state, updateReview: action.updateReview }
+
+    case DELETE_REVIEW:
+      return { ...state, deleteReview: action.deleteReview }
 
     default:
       return state;

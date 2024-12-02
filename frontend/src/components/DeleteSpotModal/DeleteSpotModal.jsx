@@ -14,10 +14,11 @@ function DeleteSpotModal({ onClose, onConfirm }) {
       onClick={handleOverlayClick}
     >
       <div className={dsm.modalContent}>
-        <h2>Are you sure you want to delete this spot?</h2>
-        <div>
-          <button onClick={onClose} className={dsm.cancelButton}>Cancel</button>
-          <button onClick={onConfirm} className={dsm.confirmButton}>Confirm</button>
+        <h1>Confirm Delete</h1>
+        <h2>Are you sure you want to remove this spot from the listings?</h2>
+        <div className={dsm.buttonContainer}>
+          <button onClick={onConfirm} className={dsm.confirmButton}>Yes (Delete Spot)</button>
+          <button onClick={onClose} className={dsm.cancelButton}>No (Keep Spot)</button>
         </div>
       </div>
     </div>

@@ -1,17 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSpotDetailThunk, getReviewsBySpotThunk } from '../../store/spot';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosStar } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
 import PostReviewModal from '../PostReview/PostReviewModal';
+import DeleteReviewModal from '../DeleteReviewModal/DeleteReviewModal';
 import sdi from './SpotDetailById.module.css';
+import { deleteReviewThunk } from '../../store/review';
 
 function SpotDetailById() {
   const { spotId } = useParams();
+  const [reviewToDelete, setReviewToDelete] = useState(null);
   const [loadingSpot, setLoadingSpot] = useState(true);
   const [loadingReview, setLoadingReview] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isReviewSubmitted, setIsReviewSubmitted] = useState(false);
   const [reviewAction, setReviewAction] = useState(null);
   const [reviewIdValue, setReviewIdValue] = useState(null);
@@ -21,6 +25,8 @@ function SpotDetailById() {
   const reviewLists = useSelector((state) => state.spots.reviewLists);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const modalRef = useRef(null);
+  const deleteModalRef = useRef(null);
 
   let userHasReview;
   if (sessionUser) {
@@ -43,15 +49,57 @@ function SpotDetailById() {
     });
   }, [loadingSpot, isReviewSubmitted, dispatch, spotId]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        (modalRef.current && !modalRef.current.contains(event.target)) ||
+        (deleteModalRef.current && !deleteModalRef.current.contains(event.target)) 
+      ) {
+        closeModal();
+        setReviewToDelete(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [])
+
   function openModal(action, reviewId, spotCurrentName) {
     setReviewAction(action);
     setReviewIdValue(reviewId);
     setSpotName(spotCurrentName);
     setShowModal(true);
   }
+
+  function openDeleteModal(reviewId) {
+    setReviewToDelete(reviewId);
+    setShowDeleteModal(true);
+  }
+
   function closeModal() {
     setShowModal(false);
+    setShowDeleteModal(false);
     setIsReviewSubmitted(false);
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (reviewToDelete) {
+      await dispatch(deleteReviewThunk(reviewToDelete))
+      await dispatch(getSpotDetailThunk(spotId))
+      await dispatch(getReviewsBySpotThunk(spotId))
+        .then(() => {
+          closeModal();
+        })
+    }
+    closeModal();
+  }
+
+  function handleDeleteCancel() {
+    setReviewToDelete(null);
+    closeModal();
   }
 
   function DisplayedDate({ updatedAt }) {
@@ -96,6 +144,15 @@ function SpotDetailById() {
             spotName={spotName}
           />
         </div>
+      )}
+
+      {showDeleteModal && (
+        <DeleteReviewModal
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
+          onClose={closeModal}
+          reviewId={reviewToDelete}
+        />
       )}
 
       <div className={sdi.mainContainer} style={{ marginTop: "120px" }}>
@@ -189,7 +246,11 @@ function SpotDetailById() {
                         </button>
                       </div>
                       <div className={sdi.deleteButton}>
-                        <button className={sdi.deleteButtonLink}>Delete</button>
+                        <button 
+                          onClick={() => openDeleteModal(review.id)}
+                          className={sdi.deleteButtonLink}>
+                          Delete
+                        </button>
                       </div>
                     </div>
                   )}

@@ -87,8 +87,6 @@ function PostReviewModal({ closeModal, spotId, reviewAction, reviewIdValue, spot
       newStars[i] = true;
     }
     setStars(newStars);
-    console.log('newStars > ', newStars);
-    // setStars(Array(value).fill(true).concat(Array(5 - value).fill(false)));
   }
 
   const handleMouseEnter = (value) => {
